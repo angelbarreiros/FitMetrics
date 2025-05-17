@@ -1,0 +1,8 @@
+@import "tailwindcss";
+
+@theme {
+    --color-primary: #4f39f6;
+    --color-formLabel: #364153;
+    --color-error: oklch(57.7% 0.245 27.325);
+    --radius-default: 8px;
+}
