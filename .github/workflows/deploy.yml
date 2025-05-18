@@ -31,4 +31,6 @@ jobs:
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
             docker pull ${{ secrets.REGISTRY_URL }}/${{ secrets.IMAGE_NAME }}:${{ secrets.IMAGE_TAG }}
+            docker stop fm_action || true
+            docker rm fm_action || true
             docker run -d -p 8910:80 --name fm_action ${{ secrets.REGISTRY_URL }}/${{ secrets.IMAGE_NAME }}:${{ secrets.IMAGE_TAG }}
