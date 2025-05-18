@@ -1,0 +1,34 @@
+name: Build & Deploy Dockerized SPA
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Log in to Docker Registry
+        run: echo "${{ secrets.REGISTRY_PASSWORD }}" | docker login ${{ secrets.REGISTRY_URL }} -u ${{ secrets.REGISTRY_USERNAME }} --password-stdin
+
+      - name: Build Docker image
+        run: |
+          docker build -t ${{ secrets.IMAGE_NAME }}:${{ secrets.IMAGE_TAG }} .
+
+      - name: Push Docker image
+        run: |
+          docker push ${{ secrets.REGISTRY_URL }}/${{ secrets.IMAGE_NAME }}:${{ secrets.IMAGE_TAG }}
+
+      - name: SSH and deploy
+        uses: appleboy/ssh-action@v1.0.0
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USER }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          script: |
+            docker pull ${{ secrets.REGISTRY_URL }}/${{ secrets.IMAGE_NAME }}:${{ secrets.IMAGE_TAG }}
+            docker run -d -p 80:80 --name fm_action ${{ secrets.REGISTRY_URL }}/${{ secrets.IMAGE_NAME }}:${{ secrets.IMAGE_TAG }}
