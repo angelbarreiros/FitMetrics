@@ -27,6 +27,14 @@ const login = {
         Active: true,
     }
 }
+const home = {
+    Route: "/",
+    Component: <h1>ESTO ES MAIN</h1>,
+    IsIndex: true,
+    FeatureFlag: {
+        Active: true,
+    }
+}
 const notFound = {
     Route: "*",
     Component: <NotFoundPage />,
@@ -46,7 +54,8 @@ export const AppRoutes: LayoutRoutes[] = [
         Auth: NonLayout,
         Routes: [
             login,
-            notFound
+            notFound,
+            home
         ],
     }
 ]

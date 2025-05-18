@@ -5,7 +5,7 @@ import { useEffect } from "react"
 
 
 const PlainAuth = () => {
-    const isAuthenticated = userStore(state => state.isAuthenticated)
+    const isAuthenticated = userStore(state => state.user.isAuthenticated)
     const navigate = useNavigate()
 
     useEffect(() => {
