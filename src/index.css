@@ -1,5 +1,9 @@
 @import "tailwindcss";
 
+.grecaptcha-badge {
+    visibility: hidden !important;
+}
+
 @theme {
     --color-primary: #4f39f6;
     --color-formLabel: #364153;

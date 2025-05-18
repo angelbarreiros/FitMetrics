@@ -1,13 +1,14 @@
-import { useState } from "react";
+import { useCallback, useState } from "react";
+import { useGoogleReCaptcha } from "react-google-recaptcha-v3";
+import { useNavigate } from "react-router-dom";
 import PrincipalForm from "../components/shared/PrincipalForm";
 import PrincipalFormError from "../components/shared/PrincipalFormError";
 import PrincipalFormField from "../components/shared/PrincipalFormField";
 import { PrincipalSubmitButton } from "../components/shared/PrincipalSubmitButton";
+import { userStore } from "../stores/userStore";
 import type { LoginResponse } from "../types/responsesTypes";
 import { fetchData } from "../util/fetch";
 import { validateEmail } from "../util/validate";
-import { userStore } from "../stores/userStore";
-import { useNavigate } from "react-router-dom";
 type LoginState = {
     email: string;
     password: string;
@@ -18,8 +19,10 @@ export const LoginPage = () => {
     const login = userStore(state => state.login)
     const navigate = useNavigate()
     const [loginState, setLoginState] = useState<LoginState>({ email: "", password: "", errors: [], })
+    const { executeRecaptcha } = useGoogleReCaptcha();
+
     const cleanErrors = () => { setLoginState(prev => ({ ...prev, errors: [] })) }
-    const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+    const handleSubmit = useCallback(async (event: React.FormEvent<HTMLFormElement>) => {
         cleanErrors()
         event.preventDefault();
         const { email, password } = loginState;
@@ -37,26 +40,29 @@ export const LoginPage = () => {
             }))
             return;
         }
-        const result = await fetchData<LoginResponse>({ apiName: "login", method: "POST", url: "/api/v1/login", body: { email, pwd: password } })
-        if (result.status === 400) {
+        if (!executeRecaptcha) {
+            console.log('reCAPTCHA not loaded yet');
+            return;
+        }
+        const token = await executeRecaptcha('LOGIN');
+
+
+        const result = await fetchData<LoginResponse>({ apiName: "login", method: "POST", url: "/api/v1/login", body: { email, pwd: password, token } })
+
+        if (result.status === 200 && result.data) {
+            login(result.data.token, result.data.UserInfo)
+            navigate("/home")
+            return
+        }
+        if (result.status !== 400) {
             setLoginState(prev => ({
                 ...prev,
                 errors: [...prev.errors, result.data.message]
             }))
             return
         }
-        if (result.status === 200 && result.data.token) {
-            login(result.data.token)
-            navigate("/home")
-            return
-        }
 
-        setLoginState(prev => ({
-            ...prev,
-            errors: [...prev.errors, "Server error"]
-        }))
-
-    }
+    }, [executeRecaptcha, loginState]);
     return (
         <div>
 

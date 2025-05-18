@@ -1,14 +1,14 @@
 
 import { create } from 'zustand';
 import { devtools } from 'zustand/middleware'
+import type { UserInfo } from '../types/responsesTypes';
 export type UserProps = {
     isAuthenticated: boolean;
-    organizationId: number;
-    language: string
+    userInfo: UserInfo | null;
 }
 export interface UserState {
     user: UserProps;
-    login: (token: string) => void;
+    login: (token: string, userInfo: UserInfo) => void;
     logout: () => void;
 }
 
@@ -16,15 +16,15 @@ export const userStore = create<UserState>()(
     devtools((set) => ({
         user: {
             isAuthenticated: false,
-            organizationId: 0,
-            language: 'en',
+            userInfo: null
         },
-        login: (token) => set((state) => {
+        login: (token, useInfo) => set((state) => {
             localStorage.setItem('token', token)
             return {
                 user: {
                     ...state.user,
                     isAuthenticated: true,
+                    userInfo: useInfo
                 }
             }
         }, undefined, 'login'),
@@ -33,7 +33,9 @@ export const userStore = create<UserState>()(
             return {
                 user: {
                     ...state.user,
+                    userInfo: null,
                     isAuthenticated: false,
+
                 }
             }
         }, undefined, 'logout'),
