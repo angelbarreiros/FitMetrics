@@ -9,12 +9,50 @@
 }
 
 @theme {
-    --color-primary: #6b1d9d;
-    --color-secundary: #f76641;
+    --color-primary: #a259ff;
+    --color-secundary: #6c6c6c;
     --color-formLabel: #364153;
     --color-text: #ffffff;
     --color-layoutLine: #ffffff;
     --height-default: 60px;
+    --width-open: 250px;
     --color-error: oklch(57.7% 0.245 27.325);
     --radius-default: 8px;
+}
+
+
+
+* {
+    scrollbar-width: thin;
+    scrollbar-color: var(--color-primary) var(--color-secundary);
+}
+
+body {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+
+.custom-scrollbar {
+
+    /* WebKit/Blink Browsers */
+    &::-webkit-scrollbar {
+        width: 8px;
+    }
+
+    &::-webkit-scrollbar-track {
+        background: var(--color-secundary);
+        border-radius: 6px;
+    }
+
+    &::-webkit-scrollbar-thumb {
+        background: var(--color-primary);
+        border-radius: 6px;
+    }
+
+    &::-webkit-scrollbar-thumb:hover {
+        background: var(--color-primary);
+    }
+
+    scrollbar-width: thin;
+    scrollbar-color: var(--color-primary) var(--color-secundary);
 }

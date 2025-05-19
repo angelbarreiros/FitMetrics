@@ -33,6 +33,7 @@ export function getNavItems({ hasNotifications, markAsRead }: GetSideNavItemsPar
             label: "Alerts",
             onClick: markAsRead,
             iconClass: hasNotifications ? "text-primary/50" : "",
+
         },
         {
             path: "/calendar",

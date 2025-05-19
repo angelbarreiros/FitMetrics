@@ -20,7 +20,7 @@ export const CustomLink = ({ to, onClick, RBAC, isDisabled, title, children, cla
             </Link>
         );
     }
-    if (RBAC.length > 0 && !isAuthenticated) {
+    if (RBAC.length > 0 && isAuthenticated) {
         return <></>;
     }
     return (

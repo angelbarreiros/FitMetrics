@@ -9,12 +9,12 @@ type NavItemProps = {
     isSidebarOpen: boolean;
     rbac?: string[];
 };
-export const NavBarButton = ({ to, Icon, label, isActive, onClick, isSidebarOpen }: NavItemProps) => {
+export const NavBarButton = ({ to, Icon, label, isActive, rbac, onClick, isSidebarOpen }: NavItemProps) => {
     return (
         <CustomLink
             to={to}
             onClick={onClick}
-            RBAC={[]}
+            RBAC={rbac ?? []}
             isDisabled={false}
 
 

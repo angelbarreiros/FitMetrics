@@ -29,20 +29,21 @@ export const PcAppLayoutComponent = () => {
     return (
         <main className="flex overflow-hidden">
             <aside
-                className={`hidden md:flex flex-col bg-secundary  transition-all duration-300 ease-in-out overflow-hidden ${isSidebarOpen ? "w-64" : "w-20"
+                className={`hidden md:flex flex-col bg-secundary  transition-all duration-300 ease-in-out overflow-hidden ${isSidebarOpen ? "w-open" : "w-20"
                     }`}
                 style={{ height: "100vh" }}
             >
                 <div
-                    className={`h-default text-text flex items-center ${isSidebarOpen ? "justify-between" : "justify-center"}`}>
+                    className={`mx-4 h-default text-text flex items-center ${isSidebarOpen ? "justify-between" : "justify-center"}`}>
                     {isSidebarOpen && (
                         <Link
-                            to="/"
+                            to="/facilities"
                             className="text-2xl font-bold w-full hover:text-text/90 transition-colors truncate flex items-center max-w-[160px] min-w-0"
                             style={{ overflow: "hidden" }}
                         >
+                            <h1>FitMetrics</h1>
                             <img
-                                src="logo.jpg"
+                                src="logo.png"
                                 alt="fitmetrics"
                                 className=" max-h-default max-w-full object-contain block"
 
