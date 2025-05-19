@@ -17,7 +17,7 @@ export type UserInfo = {
     devices: DeviceIds[];
 }
 export type LoginResponse = {
-    token: string;
+    Token: string;
     UserInfo: UserInfo
     message: string;
 }

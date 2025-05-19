@@ -1,0 +1,103 @@
+import { ChevronLeft, ChevronRight } from "lucide-react";
+import { useState } from "react";
+import { Link, Outlet, useLocation } from "react-router-dom";
+import { NavBarButton } from "../../components/shared/NavBarButton";
+import { userStore } from "../../stores/userStore";
+import { getFooterNavItems } from "./footerIcons";
+import { getNavItems } from "./sideIcons";
+
+export const PcAppLayoutComponent = () => {
+    const logout = userStore((state) => state.logout);
+    const location = useLocation();
+    const [isSidebarOpen, setIsSidebarOpen] = useState(true);
+    const [_, setIsMoreMenuOpen] = useState(false);
+    const hasNotifications = true;
+
+    const markAsRead = async () => {
+    };
+
+    const toggleSidebar = () => {
+        setIsSidebarOpen((prev) => !prev);
+    };
+
+    const handleLogout = () => {
+        setIsMoreMenuOpen(false);
+        logout();
+
+    };
+
+    return (
+        <main className="flex overflow-hidden">
+            <aside
+                className={`hidden md:flex flex-col bg-secundary  transition-all duration-300 ease-in-out overflow-hidden ${isSidebarOpen ? "w-64" : "w-20"
+                    }`}
+                style={{ height: "100vh" }}
+            >
+                <div
+                    className={`h-default text-text flex items-center ${isSidebarOpen ? "justify-between" : "justify-center"}`}>
+                    {isSidebarOpen && (
+                        <Link
+                            to="/"
+                            className="text-2xl font-bold w-full hover:text-text/90 transition-colors truncate flex items-center max-w-[160px] min-w-0"
+                            style={{ overflow: "hidden" }}
+                        >
+                            <img
+                                src="logo.jpg"
+                                alt="fitmetrics"
+                                className=" max-h-default max-w-full object-contain block"
+
+                            />
+                        </Link>
+                    )}
+                    <button
+                        onClick={toggleSidebar}
+                        className="text-white focus:outline-none p-2 rounded-default hover:bg-primary transition-colors flex-shrink-0 cursor-pointer"
+                        aria-label={isSidebarOpen ? "Contraer barra lateral" : "Expandir barra lateral"}
+                    >
+                        {isSidebarOpen ? (
+                            <ChevronLeft className="w-6 h-6" />
+                        ) : (
+                            <ChevronRight className="w-6 h-6" />
+                        )}
+                    </button>
+                </div>
+                <div className="border-t border-white" />
+                <nav className="flex-1 overflow-y-auto px-3 py-4 space-y-2 scrollbar-thin scrollbar-thumb-primary scrollbar-track-transparent">
+                    {getNavItems({ hasNotifications, markAsRead }).map((item) => (
+                        <NavBarButton
+                            key={item.path}
+                            to={item.path}
+                            Icon={item.icon}
+                            label={item.label}
+                            isActive={location.pathname === item.path}
+                            onClick={item.onClick}
+                            isSidebarOpen={isSidebarOpen}
+                            rbac={item.rbac}
+                        />
+                    ))}
+                </nav>
+                <div className="border-t border-white" />
+                <div className="px-3 py-4 space-y-2">
+                    {getFooterNavItems({ logout: handleLogout }).map((item) => (
+                        <NavBarButton
+                            key={item.path}
+                            to={item.path}
+                            Icon={item.icon}
+                            label={item.label}
+                            isActive={location.pathname === item.path}
+                            onClick={item.onClick}
+                            isSidebarOpen={isSidebarOpen}
+                            rbac={item.rbac}
+                        />
+                    ))}
+                </div>
+            </aside>
+            <div className="flex-1 overflow-auto">
+                <Outlet />
+            </div>
+        </main>
+    );
+};
+
+export default PcAppLayoutComponent;
+export const AppLayout = <PcAppLayoutComponent />;

@@ -5,12 +5,21 @@ const apis: { [key: string]: string } = {
 
 
 
-const fetcher = async <T>({ apiName, method, url, body }: FetchParams): Promise<FetchResponse<T>> => {
+const fetcher = async <T>({ apiName, method, url, body, auth }: FetchParams): Promise<FetchResponse<T>> => {
+    const headers: Record<string, string> = {
+        'Content-Type': 'application/json',
+    };
+
+    if (auth) {
+        const token = localStorage.getItem(auth.tokenName);
+        if (token) {
+            headers['Authorization'] = `Bearer ${token}`;
+        }
+    }
+
     const response = await fetch(`${apis[apiName]}${url}`, {
         method,
-        headers: {
-            'Content-Type': 'application/json',
-        },
+        headers,
         body: body ? JSON.stringify(body) : undefined,
     });
 

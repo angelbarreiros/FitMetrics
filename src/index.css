@@ -4,9 +4,17 @@
     visibility: hidden !important;
 }
 
+.nav-scrollbar::-webkit-scrollbar-thumb {
+    background-color: var(--color-primary);
+}
+
 @theme {
-    --color-primary: #4f39f6;
+    --color-primary: #6b1d9d;
+    --color-secundary: #f76641;
     --color-formLabel: #364153;
+    --color-text: #ffffff;
+    --color-layoutLine: #ffffff;
+    --height-default: 60px;
     --color-error: oklch(57.7% 0.245 27.325);
     --radius-default: 8px;
 }

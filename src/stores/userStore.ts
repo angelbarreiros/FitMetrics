@@ -2,6 +2,7 @@
 import { create } from 'zustand';
 import { devtools } from 'zustand/middleware'
 import type { UserInfo } from '../types/responsesTypes';
+const TOKEN_NAME = import.meta.env.VITE_TOKEN_NAME as string
 export type UserProps = {
     isAuthenticated: boolean;
     userInfo: UserInfo | null;
@@ -10,6 +11,7 @@ export interface UserState {
     user: UserProps;
     login: (token: string, userInfo: UserInfo) => void;
     logout: () => void;
+    checkUser: (userInfo: UserInfo) => void;
 }
 
 export const userStore = create<UserState>()(
@@ -19,7 +21,7 @@ export const userStore = create<UserState>()(
             userInfo: null
         },
         login: (token, useInfo) => set((state) => {
-            localStorage.setItem('token', token)
+            localStorage.setItem(TOKEN_NAME, token)
             return {
                 user: {
                     ...state.user,
@@ -29,7 +31,7 @@ export const userStore = create<UserState>()(
             }
         }, undefined, 'login'),
         logout: () => set((state) => {
-            localStorage.removeItem('token')
+            localStorage.removeItem(TOKEN_NAME)
             return {
                 user: {
                     ...state.user,
@@ -39,6 +41,15 @@ export const userStore = create<UserState>()(
                 }
             }
         }, undefined, 'logout'),
+        checkUser: (userInfo) => set((state) => {
+            return {
+                user: {
+                    ...state.user,
+                    userInfo: userInfo,
+                    isAuthenticated: true
+                }
+            }
+        }, undefined, 'checkUser')
 
 
     })),
