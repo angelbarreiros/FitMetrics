@@ -1,16 +1,22 @@
 import { MapPin } from "lucide-react";
-import PagesHeader from "../../components/shared/PageHeader";
 import { SEO } from "../../components/SEO";
+import PagesHeader from "../../components/shared/PageHeader";
 
-export default function FacilitiesPage() {
+export const FacilitiesPage = () => {
     return (
+
         <section>
             <SEO title="FiteMetrics - Facilities" ></SEO>
             <PagesHeader title="Facilities" icon={MapPin}>
+
             </PagesHeader>
+
+
+
         </section>
 
 
 
     );
 }
+export default FacilitiesPage;
