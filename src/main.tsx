@@ -9,9 +9,9 @@ import { userStore } from './stores/userStore.ts'
 import { FullScreenLoader } from './components/shared/FullScreenLoader.tsx'
 const RootComponent = () => {
   const [isLoading, setIsLoading] = useState(true);
-  const { logout, checkUser } = userStore(state => (state))
+  const { logout, checkUser, setConexion } = userStore(state => (state))
   useEffect(() => {
-    onMount(checkUser, logout).finally(() => setIsLoading(false));
+    onMount({ checkUser, logout, setConexion }).finally(() => setIsLoading(false));
   }, []);
   if (isLoading) {
     return <FullScreenLoader />;

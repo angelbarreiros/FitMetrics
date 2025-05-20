@@ -6,6 +6,7 @@ import { TOKEN_NAME } from '../auth/Auth';
 
 export type UserProps = {
     isAuthenticated: boolean;
+    hasConexion: boolean;
     userInfo: UserInfo | null;
 }
 export interface UserState {
@@ -13,13 +14,14 @@ export interface UserState {
     login: (token: string, userInfo: UserInfo) => void;
     logout: () => void;
     checkUser: (userInfo: UserInfo) => void;
+    setConexion: (hasConexion: boolean) => void;
 }
 
 export const userStore = create<UserState>()(
     devtools((set) => ({
         user: {
             isAuthenticated: false,
-
+            hasConexion: true,
             userInfo: null
         },
         login: (token, useInfo) => set((state) => {
@@ -52,7 +54,13 @@ export const userStore = create<UserState>()(
 
                 }
             }
-        }, undefined, 'checkUser')
+        }, undefined, 'checkUser'),
+        setConexion: (hasConexion) => set((state) => ({
+            user: {
+                ...state.user,
+                hasConexion: hasConexion
+            }
+        }), undefined, 'setConexion')
 
 
     })),

@@ -14,6 +14,7 @@ import CalendarPage from "../pages/sideBar/calendar";
 import AgentsPage from "../pages/sideBar/agents";
 import HelpPage from "../pages/footerBard/help";
 import AccountPage from "../pages/footerBard/account";
+import NoConexion from "../pages/noConexion";
 
 const login = {
     Route: "/login",
@@ -112,7 +113,14 @@ const account = {
         Active: true,
     }
 }
-
+const noConexion = {
+    Route: "/noConexion",
+    Component: <NoConexion />,
+    IsIndex: false,
+    FeatureFlag: {
+        Active: true,
+    }
+}
 export const AppRoutes: LayoutRoutes[] = [
     {
         Layout: NonLayout,
@@ -120,7 +128,8 @@ export const AppRoutes: LayoutRoutes[] = [
         Routes: [
             login,
             notFound,
-            unauthorized
+            unauthorized,
+            noConexion
         ],
     },
     {
@@ -139,6 +148,7 @@ export const AppRoutes: LayoutRoutes[] = [
 
         ],
     }
+
 ]
 
 
