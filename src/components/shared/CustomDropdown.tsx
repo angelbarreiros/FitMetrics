@@ -5,34 +5,46 @@ export interface OptionInterface {
 export type CustomDropdownProps = {
     options: OptionInterface[];
     bgColor: string;
+    textColor: string;
     id: string;
     name: string;
     defaultOption?: OptionInterface;
-    onChange: (selectedOption: string) => void;
+    getValue: (selectedOption: string) => void;
     disabled?: boolean;
 
 }
-export const CustomDropdown = (props: CustomDropdownProps) => {
+export const CustomDropdown = ({
+    options,
+    bgColor,
+    id,
+    name,
+    defaultOption,
+    textColor,
+    getValue,
+    disabled,
+
+}: CustomDropdownProps) => {
     return (
-        <label htmlFor={props.id} title={props.name}   >
+        <label htmlFor={id} title={name}>
             <select
-                name={props.name}
-                id={props.id}
-                onChange={(e) => props.onChange(e.target.value)}
-                disabled={props.disabled}
-                className={`text-lg text-text bg-${props.bgColor} rounded-default px-4 py-2 md:max-w-60 sm:max-w-28 truncate`}
+                name={name}
+                id={id}
+                onChange={(e) => getValue(e.target.value)}
+                disabled={disabled}
+                className={`text-lg text-${textColor} bg-${bgColor} rounded-default px-4 py-2 md:max-w-60 sm:max-w-28 truncate`}
+
             >
-                {props.defaultOption && (
-                    <option className="text-sm truncate" value={props.defaultOption.id}>
-                        {props.defaultOption.name}
+                {defaultOption && (
+                    <option className="text-sm truncate" value={defaultOption.id}>
+                        {defaultOption.name}
                     </option>
                 )}
-                {props.options.map((option, index) => (
+                {options.map((option, index) => (
                     <option className="text-sm truncate" key={index} value={option.id}>
                         {option.name}
                     </option>
                 ))}
             </select>
         </label>
-    )
-}
+    );
+};

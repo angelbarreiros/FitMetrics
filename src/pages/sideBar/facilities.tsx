@@ -1,7 +1,6 @@
 import { MapPin } from "lucide-react";
 import { SEO } from "../../components/SEO";
 import PagesHeader from "../../components/shared/PageHeader";
-
 export const FacilitiesPage = () => {
     return (
 
