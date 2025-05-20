@@ -17,14 +17,13 @@ export interface FetchResponse<T> {
     status: number;
     data: T;
 }
-export interface ResponseActions {
-    status: number;
-    onSuccess: () => void;
-    onUserError: () => void;
-    onServerError: () => void;
-    onUnexpectedError: () => void;
-    onForbiddenError: () => void;
-    onNotFoundError: () => void;
+export interface ResponseActions<T> {
+    onSuccess: (result: T) => void;
+    onUserError: (result: T) => void;
+    onServerError: (result: T) => void;
+    onUnexpectedError: (result: T) => void;
+    onForbiddenError: (result: T) => void;
+    onNotFoundError: (result: T) => void;
 }
 
 

@@ -1,4 +1,5 @@
 export const HOME_ROUTE = import.meta.env.VITE_HOME_ROUTE as string
+export const UNAUTHENTICATED_ROUTES = ["/login"];
 type Flag = {
     Active: boolean
     ComingSoonPage?: React.ReactElement;

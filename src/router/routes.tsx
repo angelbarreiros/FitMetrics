@@ -1,4 +1,4 @@
-import { PlainAuth } from "../auth/Auth";
+import { NAuth, PlainAuth } from "../auth/Auth";
 import { AppLayout } from "../layouts/PcApp/PcAppLayout";
 import { NonLayout } from "../layouts/types";
 import NotFoundPage from "../pages/404";
@@ -116,7 +116,7 @@ const account = {
 export const AppRoutes: LayoutRoutes[] = [
     {
         Layout: NonLayout,
-        Auth: NonLayout,
+        Auth: NAuth,
         Routes: [
             login,
             notFound,

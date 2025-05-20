@@ -39,32 +39,32 @@ const fetcher = async <T>({ apiName, method, url, body, auth }: FetchParams): Pr
 };
 
 
-export const fetchData = async <T>(params: FetchParams): Promise<FetchResponse<T>> => {
-    const result = await fetcher<T>(params);
-    return result;
+export const fetchData = async <T>(params: FetchParams, actions: ResponseActions<T>) => {
+    const response = await fetcher<T>(params);
+    switch (response.status) {
+        case 200:
+            actions.onSuccess(response.data);
+            break;
+        case 403:
+            actions.onForbiddenError(response.data);
+            break;
+        case 404:
+            actions.onNotFoundError(response.data);
+            break;
+        case 500:
+            actions.onServerError(response.data);
+            break;
+        case 400:
+            actions.onUserError(response.data);
+            break;
+        default:
+            actions.onUnexpectedError(response.data);
+    }
+    return
+
+
+
 };
 
 
 
-export const responseSelector = ({ status, onSuccess, onForbiddenError, onNotFoundError, onServerError, onUnexpectedError, onUserError }: ResponseActions) => {
-    switch (status) {
-        case 200:
-            onSuccess();
-            break;
-        case 403:
-            onForbiddenError();
-            break;
-        case 404:
-            onNotFoundError();
-            break;
-        case 500:
-            onServerError();
-            break;
-        case 400:
-            onUserError();
-            break;
-        default:
-            onUnexpectedError();
-    }
-
-}

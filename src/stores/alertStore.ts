@@ -9,11 +9,16 @@ export type AlertState = {
     addAlerts: (alerts: AlertInfo[]) => void;
 }
 
-export const alertStore = create<AlertState>()(devtools((set) => ({
-    alerts: [],
-    addAlerts: (alerts: AlertInfo[]) => set((state) => {
-        return {
-            alerts: [...state.alerts, ...alerts]
-        }
-    }, undefined, 'addAlerts')
-})))
+export const alertStore = create<AlertState>()(
+    devtools((set) => ({
+        alerts: [],
+        addAlerts: (alerts: AlertInfo[]) =>
+            set(
+                (state) => ({
+                    alerts: [...state.alerts, ...alerts],
+                }),
+                false,
+                'addAlerts'
+            ),
+    }))
+);

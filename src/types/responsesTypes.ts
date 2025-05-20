@@ -8,7 +8,6 @@ type DeviceIds = {
     googleLink: string;
 }
 export type UserInfo = {
-    id: number;
     name: string;
     email: string;
     hasUnreadNotifications: boolean;

@@ -1,16 +1,17 @@
-import { useCallback, useEffect, useState } from "react";
-import { useGoogleReCaptcha } from "react-google-recaptcha-v3";
-import { useNavigate } from "react-router-dom";
+import { useCallback, useState } from "react";
+
+import { useGoogleReCaptcha } from "@google-recaptcha/react";
 import { Loader2 } from "lucide-react";
+import { useNavigate } from "react-router-dom";
+import { SEO } from "../components/SEO";
 import PrincipalForm from "../components/shared/PrincipalForm";
 import PrincipalFormError from "../components/shared/PrincipalFormError";
 import PrincipalFormField from "../components/shared/PrincipalFormField";
 import { PrincipalSubmitButton } from "../components/shared/PrincipalSubmitButton";
 import { userStore } from "../stores/userStore";
 import type { LoginResponse } from "../types/responsesTypes";
-import { fetchData, responseSelector } from "../util/fetch";
+import { fetchData } from "../util/fetch";
 import { validateEmail } from "../util/validate";
-import { SEO } from "../components/SEO";
 type LoginState = {
     email: string;
     password: string;
@@ -19,17 +20,11 @@ type LoginState = {
 
 export const LoginPage = () => {
     const login = userStore(state => state.login)
-    const isAuthenticated = userStore(state => state.user.isAuthenticated)
     const navigate = useNavigate()
     const [loginState, setLoginState] = useState<LoginState>({ email: "", password: "", errors: [], })
     const [isLoading, setIsLoading] = useState(false);
-    const { executeRecaptcha } = useGoogleReCaptcha();
+    const executeRecaptcha = useGoogleReCaptcha();
 
-    useEffect(() => {
-        if (isAuthenticated) {
-            navigate("/facilities");
-        }
-    }, [isAuthenticated, navigate]);
 
     const cleanErrors = () => { setLoginState(prev => ({ ...prev, errors: [] })) }
 
@@ -57,24 +52,20 @@ export const LoginPage = () => {
             return;
         }
 
-        if (!executeRecaptcha) {
+        if (!executeRecaptcha || typeof executeRecaptcha.executeV3 !== "function") {
             console.log('reCAPTCHA not loaded yet');
             setIsLoading(false);
             return;
         }
 
         try {
-            const token = await executeRecaptcha('LOGIN');
-            const result = await fetchData<LoginResponse>({
-                apiName: "login",
-                method: "POST",
-                url: "/api/v1/login",
+            const token = await executeRecaptcha.executeV3('LOGIN');
+            await fetchData<LoginResponse>({
+                apiName: "login", method: "POST", url: "/api/v1/login",
                 body: { email, pwd: password, token }
-            });
-            responseSelector({
-                status: result.status,
-                onSuccess: () => {
-                    login(result.data.Token, result.data.UserInfo);
+            }, {
+                onSuccess: (response) => {
+                    login(response.Token, response.UserInfo);
                     navigate("/facilities");
                 },
                 onServerError: () => {
@@ -89,16 +80,18 @@ export const LoginPage = () => {
                         errors: [...prev.errors, "Unexpected error occurred"]
                     }));
                 },
-                onUserError: () => {
+                onUserError: (response) => {
                     setLoginState(prev => ({
                         ...prev,
-                        errors: [...prev.errors, result.data.message]
+                        errors: [...prev.errors, response.message]
                     }));
                 },
                 onForbiddenError: () => { },
                 onNotFoundError: () => { },
 
-            })
+            });
+
+
         } catch (error) {
             setLoginState(prev => ({
                 ...prev,

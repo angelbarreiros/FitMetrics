@@ -1,9 +1,10 @@
-import { Outlet, useNavigate } from "react-router-dom"
-import { userStore } from "../stores/userStore"
 import { useEffect } from "react"
+import { Outlet, useNavigate } from "react-router-dom"
+import { HOME_ROUTE } from "../router/routerTypes"
+import { userStore } from "../stores/userStore"
 
 
-const TOKEN_NAME = import.meta.env.VITE_TOKEN_NAME as string
+export const TOKEN_NAME = import.meta.env.VITE_TOKEN_NAME as string
 const PAuth = () => {
     const hasToken = localStorage.getItem(TOKEN_NAME)
     const isAuthenticated = userStore(state => state.user.isAuthenticated)
@@ -21,7 +22,21 @@ const PAuth = () => {
     }
     return <Outlet />
 }
-export const NAuth = <Outlet />
+
+const UnProtectedRoutes = () => {
+    const isAuthenticated = userStore(state => state.user.isAuthenticated);
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        if (isAuthenticated) {
+            navigate(HOME_ROUTE);
+        }
+    }, [isAuthenticated, navigate]);
+
+    return !isAuthenticated ? <Outlet /> : null;
+};
+
+export const NAuth = <UnProtectedRoutes />
 export const PlainAuth = <PAuth />
 
 // export const RBACAuth = ({ roles }: { roles: string[] }) => {

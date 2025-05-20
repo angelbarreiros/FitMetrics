@@ -2,10 +2,10 @@
 import { create } from 'zustand';
 import { devtools } from 'zustand/middleware'
 import type { UserInfo } from '../types/responsesTypes';
-const TOKEN_NAME = import.meta.env.VITE_TOKEN_NAME as string
+import { TOKEN_NAME } from '../auth/Auth';
+
 export type UserProps = {
     isAuthenticated: boolean;
-    conexionError: boolean;
     userInfo: UserInfo | null;
 }
 export interface UserState {
@@ -18,8 +18,8 @@ export interface UserState {
 export const userStore = create<UserState>()(
     devtools((set) => ({
         user: {
-            conexionError: false,
             isAuthenticated: false,
+
             userInfo: null
         },
         login: (token, useInfo) => set((state) => {
@@ -48,7 +48,8 @@ export const userStore = create<UserState>()(
                 user: {
                     ...state.user,
                     userInfo: userInfo,
-                    isAuthenticated: true
+                    isAuthenticated: true,
+
                 }
             }
         }, undefined, 'checkUser')
