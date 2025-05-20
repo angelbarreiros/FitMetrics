@@ -8,8 +8,9 @@ import PrincipalFormField from "../components/shared/PrincipalFormField";
 import { PrincipalSubmitButton } from "../components/shared/PrincipalSubmitButton";
 import { userStore } from "../stores/userStore";
 import type { LoginResponse } from "../types/responsesTypes";
-import { fetchData } from "../util/fetch";
+import { fetchData, responseSelector } from "../util/fetch";
 import { validateEmail } from "../util/validate";
+import { SEO } from "../components/SEO";
 type LoginState = {
     email: string;
     password: string;
@@ -70,19 +71,34 @@ export const LoginPage = () => {
                 url: "/api/v1/login",
                 body: { email, pwd: password, token }
             });
+            responseSelector({
+                status: result.status,
+                onSuccess: () => {
+                    login(result.data.Token, result.data.UserInfo);
+                    navigate("/facilities");
+                },
+                onServerError: () => {
+                    setLoginState(prev => ({
+                        ...prev,
+                        errors: [...prev.errors, "No conexion to the server"]
+                    }));
+                },
+                onUnexpectedError: () => {
+                    setLoginState(prev => ({
+                        ...prev,
+                        errors: [...prev.errors, "Unexpected error occurred"]
+                    }));
+                },
+                onUserError: () => {
+                    setLoginState(prev => ({
+                        ...prev,
+                        errors: [...prev.errors, result.data.message]
+                    }));
+                },
+                onForbiddenError: () => { },
+                onNotFoundError: () => { },
 
-            if (result.status === 200 && result.data) {
-                login(result.data.Token, result.data.UserInfo)
-                navigate("/facilities")
-                return
-            }
-
-            if (result.status !== 400) {
-                setLoginState(prev => ({
-                    ...prev,
-                    errors: [...prev.errors, result.data.message]
-                }))
-            }
+            })
         } catch (error) {
             setLoginState(prev => ({
                 ...prev,
@@ -103,6 +119,7 @@ export const LoginPage = () => {
 
     return (
         <div>
+            <SEO title="FiteMetrics - Login" ></SEO>
             <div className="flex items-center justify-center min-h-screen">
                 <div className="m-auto min-w-sm md:min-w-lg p-6 bg-white shadow-xl rounded-default">
                     <header className="mb-6 space-y-5">

@@ -17,8 +17,6 @@ export const NavBarButton = ({ to, Icon, label, isActive, rbac, onClick, isSideb
             RBAC={rbac ?? []}
             isDisabled={false}
 
-
-
             className={`flex items-center px-3 py-2.5 text-sm font-medium rounded-default transition-all duration-200 ${isActive
                 ? "bg-primary text-text"
                 : "text-text hover:bg-primary/50 "

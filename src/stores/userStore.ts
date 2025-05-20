@@ -5,6 +5,7 @@ import type { UserInfo } from '../types/responsesTypes';
 const TOKEN_NAME = import.meta.env.VITE_TOKEN_NAME as string
 export type UserProps = {
     isAuthenticated: boolean;
+    conexionError: boolean;
     userInfo: UserInfo | null;
 }
 export interface UserState {
@@ -17,6 +18,7 @@ export interface UserState {
 export const userStore = create<UserState>()(
     devtools((set) => ({
         user: {
+            conexionError: false,
             isAuthenticated: false,
             userInfo: null
         },

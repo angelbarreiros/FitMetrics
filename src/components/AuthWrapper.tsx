@@ -44,10 +44,14 @@ const onMount = async (
         url: "/api/v1/check",
         auth: { tokenName: TOKEN_NAME }
     });
-    if (checkedUser.status == 200) {
+    if (checkedUser.status === 200) {
         checkUser(checkedUser.data);
         navigate(HOME_ROUTE);
-    } else {
+    }
+    if (checkedUser.status === 500) {
+        navigate("/noConexion");
+    }
+    else {
         localStorage.removeItem(TOKEN_NAME);
         navigate("/login");
     }
