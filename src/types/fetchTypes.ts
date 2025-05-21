@@ -23,6 +23,7 @@ export interface ResponseActions<T> {
     onServerError: (result: T) => void;
     onUnexpectedError: (result: T) => void;
     onForbiddenError: (result: T) => void;
+    onUnauthorizedError: (result: T) => void;
     onNotFoundError: (result: T) => void;
 }
 

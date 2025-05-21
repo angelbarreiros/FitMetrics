@@ -45,6 +45,9 @@ export const fetchData = async <T>(params: FetchParams, actions: ResponseActions
         case 200:
             actions.onSuccess(response.data);
             break;
+        case 401:
+            actions.onUnauthorizedError(response.data);
+            break;
         case 403:
             actions.onForbiddenError(response.data);
             break;

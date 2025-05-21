@@ -1,100 +1,169 @@
-
 import { CircleUserRound, Loader2, Save } from "lucide-react";
-import { SEO } from "../../components/SEO";
-import PagesHeader from "../../components/shared/PageHeader";
-import { useState } from "react";
-import EditableField from "../../components/shared/EditableFiled";
-import { userStore } from "../../stores/userStore";
-import PasswordModifier from "../../components/shared/PasswordModifier";
-import { fetchData } from "../../util/fetch";
+import { useRef, useState } from "react";
 import { TOKEN_NAME } from "../../auth/Auth";
+import { SEO } from "../../components/SEO";
+import EditableField from "../../components/shared/EditableFiled";
+import PagesHeader from "../../components/shared/PageHeader";
+import PasswordModifier from "../../components/shared/PasswordModifier";
+import { userStore } from "../../stores/userStore";
+import { fetchData } from "../../util/fetch";
 import { validateEmail, validatePassword } from "../../util/validate";
-type AccountPageProps = {
-    userName: string;
-    email: string;
-    password: string;
-    newPassword: string;
-    repeatPassword: string;
-}
+import type { EditAccountResponse } from "../../types/responsesTypes";
+
+
 export default function AccountPage() {
-    const userInfo = userStore((state) => state.user.userInfo);
+    const { Name, Email } = userStore((state) => state.user.userInfo);
     const { logout, editAccount } = userStore((state) => state);
     const [isSubmitting, setIsSubmitting] = useState(false);
-    const [accountState, setAccountState] = useState<AccountPageProps>({
-        userName: userInfo?.Name || "",
-        email: userInfo?.Email || "",
-        password: "",
-        newPassword: "",
-        repeatPassword: ""
-    });
+    const [fetchError, setFetchError] = useState("");
+    const [stopEditing, setStopEditing] = useState(false);
     const [errors, setErrors] = useState({
         email: "",
         userName: "",
         oldPwd: "",
         newPwd: "",
         confirmNewPwd: ""
-    })
+    });
+
+    const userNameRef = useRef(Name);
+    const emailRef = useRef(Email);
+    const passwordRef = useRef("");
+    const newPasswordRef = useRef("");
+    const repeatPasswordRef = useRef("");
+    const cleanErrors = () => {
+        setErrors({
+            email: "",
+            userName: "",
+            oldPwd: "",
+            newPwd: "",
+            confirmNewPwd: ""
+        });
+        setFetchError("");
+
+    };
     const handleSaveChanges = async () => {
-        validateEmail(accountState.email)
-        validatePassword(accountState.newPassword)
-        const areEqual = accountState.newPassword === accountState.repeatPassword;
+        cleanErrors();
+
+        let isValidPassword = true
+        let isValidNewPassword = true
+        let areEqual = true
+
+        const isValidMail = validateEmail(emailRef.current.trim());
+        if (passwordRef.current.trim() !== "") {
+            isValidPassword = validatePassword(passwordRef.current.trim());
+            isValidNewPassword = validatePassword(newPasswordRef.current.trim());
+            areEqual = newPasswordRef.current === repeatPasswordRef.current;
+        }
+
+        if (!isValidMail) {
+            setErrors((prev) => ({ ...prev, email: "Invalid email" }));
+        }
+        if (!isValidPassword) {
+            setErrors((prev) => ({ ...prev, oldPwd: "Invalid password" }));
+        }
+        if (!isValidNewPassword) {
+            setErrors((prev) => ({ ...prev, newPwd: "Invalid password" }));
+        }
+        if (!areEqual) {
+            setErrors((prev) => ({ ...prev, confirmNewPwd: "Passwords do not match" }));
+        }
+        if (!isValidMail || !isValidPassword || !isValidNewPassword || !areEqual) {
+            console.log("Invalid data");
+            return;
+        }
+        setStopEditing(!stopEditing);
+
 
         const userData = {
-            name: accountState.userName.trim(),
-            email: accountState.email.trim(),
-            oldPwd: accountState.password.trim() === "" ? undefined : accountState.password.trim(),
-            newPwd: accountState.newPassword.trim() === "" ? undefined : accountState.newPassword.trim(),
-
+            name: userNameRef.current.trim(),
+            email: emailRef.current.trim(),
+            oldPwd: passwordRef.current.trim() === "" ? undefined : passwordRef.current.trim(),
+            newPwd: newPasswordRef.current.trim() === "" ? undefined : newPasswordRef.current.trim(),
         };
+
         setIsSubmitting(true);
-        fetchData({ apiName: "login", url: "/api/v1/edit", method: "PUT", body: userData, auth: { tokenName: TOKEN_NAME } }, {
-            onForbiddenError: () => { logout() },
-            onNotFoundError: () => { logout() },
-            onServerError: () => { logout() },
-            onUnexpectedError: () => { logout() },
-            onUserError: () => { logout() },
-            onSuccess: () => { }
-        })
+        await fetchData<EditAccountResponse>(
+            { apiName: "login", url: "/api/v1/edit", method: "PUT", body: userData, auth: { tokenName: TOKEN_NAME } },
+            {
+                onUnauthorizedError: (value) => { setFetchError(value.message); },
+                onForbiddenError: () => { logout(); },
+                onNotFoundError: () => { logout(); },
+                onServerError: () => { logout(); },
+                onUnexpectedError: () => { logout(); },
+                onUserError: (value) => { setFetchError(value.message); },
+                onSuccess: (value) => {
+                    editAccount(value)
+                    if (newPasswordRef.current.trim() != "") {
+                        logout()
+                    }
+                }
+            }
+        );
         setIsSubmitting(false);
-    }
+    };
+
     return (
         <section>
-            <SEO title="FitMetrics - Account Details" ></SEO>
+            <SEO title="FitMetrics - Account Details" />
             <PagesHeader title="Account Details" icon={CircleUserRound}>
                 <div className="mr-8">
-                    <button onClick={handleSaveChanges} className="bg-primary px-4 py-2 rounded-default font-semibold text-text flex items-center gap-2 hover:bg-primary/80 transition-all duration-200 hover:cursor-pointer">
-                        {isSubmitting ? <Loader2 className="animate-spin w-6 h-6 text-text" /> : <Save className="w-6 h-6 text-text" />}
+                    <button
+                        onClick={handleSaveChanges}
+                        className="bg-primary px-4 py-2 rounded-default font-semibold text-text flex items-center gap-2 hover:bg-primary/80 transition-all duration-200 hover:cursor-pointer"
+                    >
+                        {isSubmitting ? (
+                            <Loader2 className="animate-spin w-6 h-6 text-text" />
+                        ) : (
+                            <Save className="w-6 h-6 text-text" />
+                        )}
                         Save Changes
                     </button>
                 </div>
-
             </PagesHeader>
             <div className="grid md:grid-cols-2 p-6 gap-4">
-                <EditableField name="Username" label="Username" type="text" error={errors.userName} value={accountState.userName} getValue={(userName) => setAccountState({ ...accountState, userName })}></EditableField>
-                <EditableField name="Email" label="Email" type="text" error={errors.email} value={accountState.email} getValue={(email) => setAccountState({ ...accountState, email })}></EditableField>
+                <EditableField
+                    stopEditing={stopEditing}
+                    name="Username"
+                    label="Username"
+                    type="text"
+                    error={errors.userName}
+                    value={Name}
+                    getValue={(userName) => { userNameRef.current = userName; setErrors({ ...errors, userName: "" }); }}
+                />
+                <EditableField
+                    stopEditing={stopEditing}
+                    name="Email"
+                    label="Email"
+                    type="text"
+                    error={errors.email}
+                    value={Email}
+                    getValue={(email) => { emailRef.current = email; setErrors({ ...errors, email: "" }); }}
+                />
                 <PasswordModifier
-                    oldPwd={accountState.password}
-                    setOldPwd={(password) => { setAccountState({ ...accountState, password }) }}
-                    newPwd={accountState.newPassword}
-                    setNewPwd={(newPassword) => { setAccountState({ ...accountState, newPassword }) }}
-                    confirmNewPwd={accountState.repeatPassword}
-                    setConfirmNewPwd={(repeatPassword) => { setAccountState({ ...accountState, repeatPassword }) }}
+                    oldPwd={passwordRef.current}
+                    setOldPwd={(password) => { passwordRef.current = password; }}
+                    newPwd={newPasswordRef.current}
+                    setNewPwd={(newPassword) => { newPasswordRef.current = newPassword; }}
+                    confirmNewPwd={repeatPasswordRef.current}
+                    setConfirmNewPwd={(repeatPassword) => { repeatPasswordRef.current = repeatPassword; }}
                     errors={errors}
+                />
+                <p>
+                    <span className="text-md text-error">{fetchError}</span>
+                </p>
 
+                <button
+                    onClick={handleSaveChanges}
+                    className="md:hidden bg-primary px-4 py-2 rounded-default font-semibold text-text flex items-center gap-2 hover:bg-primary/80 transition-all duration-200 hover:cursor-pointer"
                 >
-                </PasswordModifier>
-                <button onClick={handleSaveChanges} className="md:hidden bg-primary px-4 py-2 rounded-default font-semibold text-text flex items-center gap-2 hover:bg-primary/80 transition-all duration-200 hover:cursor-pointer">
-                    {isSubmitting ? <Loader2 className="animate-spin w-6 h-6 text-text" /> : <Save className="w-6 h-6 text-text" />}
+                    {isSubmitting ? (
+                        <Loader2 className="animate-spin w-6 h-6 text-text" />
+                    ) : (
+                        <Save className="w-6 h-6 text-text" />
+                    )}
                     Save Changes
                 </button>
-
-
             </div>
-
-
         </section>
-
-
-
     );
 }

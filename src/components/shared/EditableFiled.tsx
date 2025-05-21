@@ -1,20 +1,22 @@
-import React, { useState, useRef } from "react";
-import { Pencil, X } from "lucide-react";
+import { LucideUndo2, Pencil } from "lucide-react";
+import React, { useEffect, useRef, useState } from "react";
 
 interface EditableFieldProps {
     label: string;
     type: string;
     value: string;
+    stopEditing?: boolean;
     getValue: (newValue: string) => void;
     name?: string;
     placeholder?: string;
     error: string
 }
 
-export const EditableField = ({ label, value, getValue, type, name, placeholder, error }: EditableFieldProps) => {
+export const EditableField = ({ label, value, getValue, stopEditing, type, name, placeholder, error }: EditableFieldProps) => {
     const [editing, setEditing] = useState(false);
     const [inputValue, setInputValue] = useState(value);
     const inputRef = useRef<HTMLInputElement>(null);
+    useEffect(() => { setEditing(false) }, [stopEditing]);
 
     const handleEditClick = () => {
         setEditing(true);
@@ -26,12 +28,14 @@ export const EditableField = ({ label, value, getValue, type, name, placeholder,
     const handleCancelClick = () => {
         setInputValue(value);
         setEditing(false);
+        getValue(value);
     };
 
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setInputValue(e.target.value);
         getValue(e.target.value);
     };
+
 
     return (
         <div className="flex flex-col gap-1">
@@ -48,10 +52,10 @@ export const EditableField = ({ label, value, getValue, type, name, placeholder,
                     onChange={handleInputChange}
                     disabled={!editing}
                     placeholder={placeholder}
-                    className={`flex-1 px-4 py-2 text-secondary text-md rounded-default transition 
+                    className={`flex-1 px-4 py-2  text-secondary text-md rounded-default
                             ${editing
                             ? "border border-primary bg-white outline-none focus:ring-2 focus:ring-primary"
-                            : "border border-transparent bg-transparent"
+                            : "bg-gray-50  border border-gray-200"
                         }`
                     }
                 />
@@ -68,7 +72,7 @@ export const EditableField = ({ label, value, getValue, type, name, placeholder,
                         onClick={handleCancelClick}
                         className="bg-none border-none cursor-pointer  text-primary"
                     >
-                        <X className="w-6 h-6" />
+                        <LucideUndo2 className="w-6 h-6" />
                     </button>
                 ) : (
                     <button

@@ -1,9 +1,8 @@
 
 import { create } from 'zustand';
-import { devtools } from 'zustand/middleware'
-import type { UserInfo } from '../types/responsesTypes';
+import { devtools } from 'zustand/middleware';
 import { TOKEN_NAME } from '../auth/Auth';
-import type { EditAccount } from '../types/fetchTypes';
+import type { EditAccountResponse, UserInfo } from '../types/responsesTypes';
 import { UserInfoInitialState } from './initialState';
 
 export type UserProps = {
@@ -17,7 +16,7 @@ export interface UserState {
     logout: () => void;
     checkUser: (userInfo: UserInfo) => void;
     setConexion: (hasConexion: boolean) => void;
-    editAccount: (editAccount: EditAccount) => void
+    editAccount: (editAccount: EditAccountResponse) => void
 }
 
 export const userStore = create<UserState>()(

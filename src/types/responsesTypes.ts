@@ -29,3 +29,10 @@ export type LoginResponse = {
     message: string;
 }
 
+export type EditAccountResponse = {
+    Id: number;
+    Name: string;
+    Email: string;
+    SendMonthlyEmail: boolean;
+    message: string;
+}

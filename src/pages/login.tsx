@@ -64,6 +64,12 @@ export const LoginPage = () => {
                 apiName: "login", method: "POST", url: "/api/v1/login",
                 body: { email, pwd: password, token }
             }, {
+                onUnauthorizedError: () => {
+                    setLoginState(prev => ({
+                        ...prev,
+                        errors: [...prev.errors, "Invalid email or password"]
+                    }));
+                },
                 onSuccess: (response) => {
                     login(response.Token, response.UserInfo);
                     navigate("/facilities");
