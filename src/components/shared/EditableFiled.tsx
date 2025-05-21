@@ -5,12 +5,13 @@ interface EditableFieldProps {
     label: string;
     type: string;
     value: string;
-    onChange: (newValue: string) => void;
+    getValue: (newValue: string) => void;
     name?: string;
     placeholder?: string;
+    error: string
 }
 
-export const EditableField = ({ label, value, onChange, type, name, placeholder }: EditableFieldProps) => {
+export const EditableField = ({ label, value, getValue, type, name, placeholder, error }: EditableFieldProps) => {
     const [editing, setEditing] = useState(false);
     const [inputValue, setInputValue] = useState(value);
     const inputRef = useRef<HTMLInputElement>(null);
@@ -29,12 +30,12 @@ export const EditableField = ({ label, value, onChange, type, name, placeholder 
 
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setInputValue(e.target.value);
-        onChange(e.target.value);
+        getValue(e.target.value);
     };
 
     return (
         <div className="flex flex-col gap-1">
-            <label htmlFor={name} className="text-xl text-primary/70">
+            <label htmlFor={name} className="text-md text-secundary/70">
                 {label}:
             </label>
             <div className="flex items-center gap-2">
@@ -47,10 +48,19 @@ export const EditableField = ({ label, value, onChange, type, name, placeholder 
                     onChange={handleInputChange}
                     disabled={!editing}
                     placeholder={placeholder}
-                    className={`flex-1 px-4 py-2 text-primary text-md border border-secundary rounded-default transition 
-                        ${editing ? " bg-white outline-0" : " bg-transparent outline-none"}
-                        `}
+                    className={`flex-1 px-4 py-2 text-secondary text-md rounded-default transition 
+                            ${editing
+                            ? "border border-primary bg-white outline-none focus:ring-2 focus:ring-primary"
+                            : "border border-transparent bg-transparent"
+                        }`
+                    }
                 />
+
+                {error && (
+                    <span className="text-error text-sm">
+                        {error}
+                    </span>
+                )}
                 {editing ? (
                     <button
                         type="button"
@@ -58,16 +68,16 @@ export const EditableField = ({ label, value, onChange, type, name, placeholder 
                         onClick={handleCancelClick}
                         className="bg-none border-none cursor-pointer  text-primary"
                     >
-                        <X size={18} />
+                        <X className="w-6 h-6" />
                     </button>
                 ) : (
                     <button
                         type="button"
                         aria-label="Edit field"
                         onClick={handleEditClick}
-                        className="bg-none border-none cursor-pointer  text-primary"
+                        className="bg-none border-none cursor-pointer text-primary"
                     >
-                        <Pencil size={18} />
+                        <Pencil className="w-6 h-6" />
                     </button>
                 )}
             </div>

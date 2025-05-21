@@ -12,8 +12,8 @@ import AnalyticsPage from "../pages/sideBar/analytics";
 import AlertsPage from "../pages/sideBar/alerts";
 import CalendarPage from "../pages/sideBar/calendar";
 import AgentsPage from "../pages/sideBar/agents";
-import HelpPage from "../pages/footerBard/help";
-import AccountPage from "../pages/footerBard/account";
+import HelpPage from "../pages/footerBar/help";
+import AccountPage from "../pages/footerBar/account";
 import NoConexion from "../pages/noConexion";
 
 const login = {

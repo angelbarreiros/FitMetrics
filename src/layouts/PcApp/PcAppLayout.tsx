@@ -93,7 +93,7 @@ export const PcAppLayoutComponent = () => {
                     ))}
                 </div>
             </aside>
-            <div className="flex-1 overflow-auto">
+            <div className="flex-1 overflow-auto bg-third">
                 <Outlet />
             </div>
         </main>

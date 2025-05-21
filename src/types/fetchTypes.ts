@@ -27,4 +27,13 @@ export interface ResponseActions<T> {
 }
 
 
+export type EditAccount = {
+    Name: string;
+    Email: string;
+    OldPwd: string;
+    NewPwd: string;
+
+}
+
+
 

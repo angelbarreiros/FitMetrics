@@ -1,22 +1,31 @@
-type DeviceIds = {
-    id: number;
-    name: string;
-    uuidName: string;
-    isActive: boolean;
-    facilityId?: number;
-    facilityName: string;
-    googleLink: string;
-}
 export type UserInfo = {
-    name: string;
-    email: string;
-    hasUnreadNotifications: boolean;
-    sendMonthlyEmail: boolean;
-    alertLanguage: string;
-    devices: DeviceIds[];
+    Name: string;
+    Email: string;
+    HasUnreadNotifications: boolean;
+    SendMonthlyEmail: boolean;
+    AlertLanguage: string;
+    Facilities: FacilitiesDto[];
 }
+export type FacilitiesDto = {
+    Id: number;
+    Name: string;
+    GoogleLink: string;
+    PhoneNumber: string;
+    DesireDailyClicks: number;
+    HideGoogleOnBadRating: boolean;
+    ShowQrOnQuestions: boolean;
+    Devices: DeviceDto[];
+}
+export type DeviceDto = {
+    Id: number;
+    Name: string;
+    UuidName: string;
+    IsActive: boolean;
+};
+
 export type LoginResponse = {
     Token: string;
     UserInfo: UserInfo
     message: string;
 }
+

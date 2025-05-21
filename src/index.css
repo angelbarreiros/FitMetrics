@@ -9,8 +9,9 @@
 }
 
 @theme {
-    --color-primary: #a259ff;
-    --color-secundary: #6c6c6c;
+    --color-primary: #4f8cff;
+    --color-secundary: #232946;
+    --color-third: #f5f6fa;
     --color-formLabel: #364153;
     --color-text: #ffffff;
     --color-layoutLine: #ffffff;

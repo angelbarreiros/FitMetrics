@@ -3,11 +3,13 @@ import { create } from 'zustand';
 import { devtools } from 'zustand/middleware'
 import type { UserInfo } from '../types/responsesTypes';
 import { TOKEN_NAME } from '../auth/Auth';
+import type { EditAccount } from '../types/fetchTypes';
+import { UserInfoInitialState } from './initialState';
 
 export type UserProps = {
     isAuthenticated: boolean;
     hasConexion: boolean;
-    userInfo: UserInfo | null;
+    userInfo: UserInfo;
 }
 export interface UserState {
     user: UserProps;
@@ -15,6 +17,7 @@ export interface UserState {
     logout: () => void;
     checkUser: (userInfo: UserInfo) => void;
     setConexion: (hasConexion: boolean) => void;
+    editAccount: (editAccount: EditAccount) => void
 }
 
 export const userStore = create<UserState>()(
@@ -39,7 +42,7 @@ export const userStore = create<UserState>()(
             return {
                 user: {
                     ...state.user,
-                    userInfo: null,
+                    userInfo: UserInfoInitialState,
                     isAuthenticated: false,
 
                 }
@@ -60,7 +63,19 @@ export const userStore = create<UserState>()(
                 ...state.user,
                 hasConexion: hasConexion
             }
+        }), undefined, 'setConexion'),
+        editAccount: (editAccount) => set((state) => ({
+            user: {
+                ...state.user,
+                userInfo: {
+                    ...state.user.userInfo,
+                    Name: editAccount.Name,
+                    Email: editAccount.Email,
+                }
+
+            }
         }), undefined, 'setConexion')
+
 
 
     })),
