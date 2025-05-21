@@ -10,11 +10,13 @@
 
 @theme {
     --color-primary: #4f8cff;
-    --color-secundary: #232946;
-    --color-third: #f5f6fa;
-    --color-formLabel: #364153;
-    --color-text: #ffffff;
-    --color-layoutLine: #ffffff;
+    --color-secundary: #ffe066;
+    --color-third: #e0f7fa;
+    --color-text: #1a1a2e;
+    --color-text-secundary: #000000;
+
+    --color-borderLine: #000000;
+
     --height-default: 60px;
     --width-open: 250px;
     --color-error: oklch(57.7% 0.245 27.325);

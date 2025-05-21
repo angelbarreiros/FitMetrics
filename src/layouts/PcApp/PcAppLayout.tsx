@@ -29,16 +29,16 @@ export const PcAppLayoutComponent = () => {
     return (
         <main className="flex overflow-hidden">
             <aside
-                className={`hidden md:flex flex-col bg-secundary  transition-all duration-300 ease-in-out overflow-hidden ${isSidebarOpen ? "w-open" : "w-20"
+                className={`hidden md:flex flex-col bg-secundary border-r border-borderLine  transition-all duration-300 ease-in-out overflow-hidden ${isSidebarOpen ? "w-open" : "w-20"
                     }`}
                 style={{ height: "100vh" }}
             >
                 <div
-                    className={`mx-4 h-default text-text flex items-center ${isSidebarOpen ? "justify-between" : "justify-center"}`}>
+                    className={` h-default border-b border-borderLine text-text flex items-center ${isSidebarOpen ? "justify-between" : "justify-center"}`}>
                     {isSidebarOpen && (
                         <Link
                             to="/facilities"
-                            className="text-2xl font-bold w-full hover:text-text/90 transition-colors truncate flex items-center max-w-[160px] min-w-0"
+                            className=" mx-4 text-2xl font-bold w-full hover:text-text/90 transition-colors truncate flex items-center max-w-[160px] min-w-0"
                             style={{ overflow: "hidden" }}
                         >
                             <h1>FitMetrics</h1>
@@ -52,17 +52,17 @@ export const PcAppLayoutComponent = () => {
                     )}
                     <button
                         onClick={toggleSidebar}
-                        className="text-white focus:outline-none p-2 rounded-default hover:bg-primary transition-colors flex-shrink-0 cursor-pointer"
+                        className="mx-1 text-white focus:outline-none p-2 rounded-default hover:bg-primary transition-colors flex-shrink-0 cursor-pointer"
                         aria-label={isSidebarOpen ? "Contraer barra lateral" : "Expandir barra lateral"}
                     >
                         {isSidebarOpen ? (
-                            <ChevronLeft className="w-6 h-6" />
+                            <ChevronLeft className="w-6 h-6 text-text" />
                         ) : (
-                            <ChevronRight className="w-6 h-6" />
+                            <ChevronRight className="w-6 h-6 text-text" />
                         )}
                     </button>
                 </div>
-                <div className="border-t border-white" />
+
                 <nav className="flex-1 overflow-y-auto px-3 py-4 space-y-2 scrollbar-thin scrollbar-thumb-primary scrollbar-track-transparent">
                     {getNavItems({ hasNotifications, markAsRead }).map((item) => (
                         <NavBarButton
@@ -77,7 +77,7 @@ export const PcAppLayoutComponent = () => {
                         />
                     ))}
                 </nav>
-                <div className="border-t border-white" />
+                <div className="border-t border-borderLine" />
                 <div className="px-3 py-4 space-y-2">
                     {getFooterNavItems({ logout: handleLogout }).map((item) => (
                         <NavBarButton
@@ -93,7 +93,7 @@ export const PcAppLayoutComponent = () => {
                     ))}
                 </div>
             </aside>
-            <div className="flex-1 overflow-auto bg-third">
+            <div className="flex-1 overflow-auto h-screen bg-third">
                 <Outlet />
             </div>
         </main>

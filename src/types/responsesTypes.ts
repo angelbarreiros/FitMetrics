@@ -36,3 +36,12 @@ export type EditAccountResponse = {
     SendMonthlyEmail: boolean;
     message: string;
 }
+export type AddFacilityResponse = {
+    Id: number;
+    Name: string;
+    GoogleLink: string;
+    PhoneNumber: string;
+    Devices: any[];
+
+    Message: string;
+}

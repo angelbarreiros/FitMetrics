@@ -1,6 +1,6 @@
 import type { LucideIcon } from "lucide-react";
 import type { ReactNode } from "react";
-
+import { userStore } from "../../stores/userStore";
 
 type PagesHeaderProps = {
     title: string;
@@ -9,20 +9,22 @@ type PagesHeaderProps = {
 };
 
 export const PagesHeader = ({ title, icon: Icon, children }: PagesHeaderProps) => {
+    const { Name } = userStore((state) => state.user.userInfo);
     return (
-        <header className="flex items-center justify-center  bg-secundary h-default md:border-l-1 md:border-white md:justify-between">
+        <header className="sticky top-0 z-50 flex items-center justify-center border-b border-borderLine bg-secundary h-default md:justify-between">
             <div className="ml-4 flex items-center gap-2 text-text">
-                <Icon className="w-6 h-6" />
-                <h1 className="text-2xl font-semibold">{title}</h1>
+                <Icon className="w-6 h-6 text-primary" />
+                <h1 className="text-xl">
+                    {title}
+                    <b className="text-primary">{" "}{Name}</b>
+                </h1>
             </div>
             <div>
                 <div className="hidden md:flex">
                     {children}
                 </div>
-                <div>
-                    <div className="flex md:hidden">
-                        {/* Revisas como hacer con la forma de movil */}
-                    </div>
+                <div className="flex md:hidden">
+                    {/* Mobile layout coming soon */}
                 </div>
             </div>
         </header>

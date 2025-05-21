@@ -39,7 +39,7 @@ export const EditableField = ({ label, value, getValue, stopEditing, type, name,
 
     return (
         <div className="flex flex-col gap-1">
-            <label htmlFor={name} className="text-md text-secundary/70">
+            <label htmlFor={name} className="text-md text-text-secundary/80">
                 {label}:
             </label>
             <div className="flex items-center gap-2">
@@ -52,10 +52,10 @@ export const EditableField = ({ label, value, getValue, stopEditing, type, name,
                     onChange={handleInputChange}
                     disabled={!editing}
                     placeholder={placeholder}
-                    className={`flex-1 px-4 py-2  text-secondary text-md rounded-default
+                    className={`flex-1 px-4 py-2  text-text-secundary text-md rounded-default
                             ${editing
-                            ? "border border-primary bg-white outline-none focus:ring-2 focus:ring-primary"
-                            : "bg-gray-50  border border-gray-200"
+                            ? "border border-primary  outline-none focus:ring-2 focus:ring-primary"
+                            : "bg-trhid  border border-gray-200"
                         }`
                     }
                 />

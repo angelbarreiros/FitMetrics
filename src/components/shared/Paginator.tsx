@@ -45,7 +45,7 @@ export const Paginator = ({ currentPage, pageSize, noMoreItems, onPageChange, on
                         >
                             Anterior
                         </button>
-                        <span className="px-4 py-2 bg-primary text-text font-medium rounded-md">
+                        <span className="px-4 py-2 bg-primary text-text font-medium rounded-default">
                             {currentPage}
                         </span>
                         <button

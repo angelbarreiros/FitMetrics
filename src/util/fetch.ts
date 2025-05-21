@@ -24,6 +24,12 @@ const fetcher = async <T>({ apiName, method, url, body, auth }: FetchParams): Pr
             body: body ? JSON.stringify(body) : undefined,
         });
 
+        if (response.status === 204) {
+            return {
+                status: response.status,
+                data: {} as T,
+            };
+        }
         const data = await response.json();
         return {
             status: response.status,
@@ -42,6 +48,10 @@ const fetcher = async <T>({ apiName, method, url, body, auth }: FetchParams): Pr
 export const fetchData = async <T>(params: FetchParams, actions: ResponseActions<T>) => {
     const response = await fetcher<T>(params);
     switch (response.status) {
+        case 204:
+            actions.onSuccess(response.data);
+            break;
+
         case 200:
             actions.onSuccess(response.data);
             break;

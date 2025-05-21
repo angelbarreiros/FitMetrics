@@ -10,12 +10,12 @@ interface FormFieldProps extends Omit<React.InputHTMLAttributes<HTMLInputElement
 export const PrincipalFormField = ({ label, name, value, getValue, ...rest }: FormFieldProps) => (
     <div className="flex flex-col" >
         <label
-            className="block text-sm font-medium text-formLabel"
+            className="block text-sm font-medium text-text-secundary/70"
             htmlFor={name}>
             {label}
         </label>
         <input
-            className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-default focus:border-primary "
+            className="mt-1 block w-full px-4 py-2 border text-text-secundary border-gray-300 rounded-default focus:border-primary  "
             id={name}
             name={name}
             value={value}

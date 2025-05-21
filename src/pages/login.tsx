@@ -93,7 +93,12 @@ export const LoginPage = () => {
                     }));
                 },
                 onForbiddenError: () => { },
-                onNotFoundError: () => { },
+                onNotFoundError: (response) => {
+                    setLoginState(prev => ({
+                        ...prev,
+                        errors: [...prev.errors, response.message]
+                    }));
+                },
 
             });
 
@@ -120,12 +125,12 @@ export const LoginPage = () => {
         <div>
             <SEO title="FiteMetrics - Login" ></SEO>
             <div className="flex items-center justify-center min-h-screen">
-                <div className="m-auto min-w-sm md:min-w-lg p-6 bg-white shadow-xl rounded-default">
+                <div className="m-auto min-w-sm md:min-w-lg p-6 bg-third shadow-xl rounded-default">
                     <header className="mb-6 space-y-5">
-                        <h2 className="text-center text-3xl font-bold text-black">
+                        <h2 className="text-center text-3xl font-bold text-text-secundary">
                             Welcome Back
                         </h2>
-                        <p className="text-xl text-center text-formLabel">Please, Sign In To Continue </p>
+                        <p className="text-xl text-center text-text-secundary">Please, Sign In To Continue </p>
                     </header>
                     <PrincipalForm onSubmit={handleSubmit}>
                         <PrincipalFormField

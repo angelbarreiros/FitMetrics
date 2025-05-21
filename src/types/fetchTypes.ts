@@ -35,6 +35,12 @@ export type EditAccount = {
     NewPwd: string;
 
 }
+export type EditFacility = {
+    Id: number
+    Name: string;
+    GoogleLink: string;
+    PhoneNumber: string;
+}
 
 
 

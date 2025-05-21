@@ -1,14 +1,14 @@
-import { CircleUserRound, Loader2, Save } from "lucide-react";
-import { useRef, useState } from "react";
+import { CircleUserRound, Loader2, Save, SaveIcon } from "lucide-react";
+import { useCallback, useRef, useState } from "react";
 import { TOKEN_NAME } from "../../auth/Auth";
 import { SEO } from "../../components/SEO";
-import EditableField from "../../components/shared/EditableFiled";
+import EditableField from "../../components/shared/EditableField";
 import PagesHeader from "../../components/shared/PageHeader";
 import PasswordModifier from "../../components/shared/PasswordModifier";
 import { userStore } from "../../stores/userStore";
+import type { EditAccountResponse } from "../../types/responsesTypes";
 import { fetchData } from "../../util/fetch";
 import { validateEmail, validatePassword } from "../../util/validate";
-import type { EditAccountResponse } from "../../types/responsesTypes";
 
 
 export default function AccountPage() {
@@ -109,12 +109,12 @@ export default function AccountPage() {
                 <div className="mr-8">
                     <button
                         onClick={handleSaveChanges}
-                        className="bg-primary px-4 py-2 rounded-default font-semibold text-text flex items-center gap-2 hover:bg-primary/80 transition-all duration-200 hover:cursor-pointer"
+                        className="bg-primary px-4 py-2 rounded-default  text-text flex items-center gap-2 hover:bg-primary/80 transition-all duration-200 hover:cursor-pointer"
                     >
                         {isSubmitting ? (
                             <Loader2 className="animate-spin w-6 h-6 text-text" />
                         ) : (
-                            <Save className="w-6 h-6 text-text" />
+                            <SaveIcon className="w-6 h-6 text-text" />
                         )}
                         Save Changes
                     </button>
@@ -128,7 +128,7 @@ export default function AccountPage() {
                     type="text"
                     error={errors.userName}
                     value={Name}
-                    getValue={(userName) => { userNameRef.current = userName; setErrors({ ...errors, userName: "" }); }}
+                    getValue={useCallback((userName) => { userNameRef.current = userName; setErrors({ ...errors, userName: "" }); }, [errors])}
                 />
                 <EditableField
                     stopEditing={stopEditing}
@@ -137,7 +137,7 @@ export default function AccountPage() {
                     type="text"
                     error={errors.email}
                     value={Email}
-                    getValue={(email) => { emailRef.current = email; setErrors({ ...errors, email: "" }); }}
+                    getValue={useCallback((email) => { userNameRef.current = email; setErrors({ ...errors, email: "" }); }, [errors])}
                 />
                 <PasswordModifier
                     oldPwd={passwordRef.current}

@@ -1,9 +1,9 @@
-
 import { create } from 'zustand';
 import { devtools } from 'zustand/middleware';
 import { TOKEN_NAME } from '../auth/Auth';
-import type { EditAccountResponse, UserInfo } from '../types/responsesTypes';
+import type { AddFacilityResponse, EditAccountResponse, UserInfo } from '../types/responsesTypes';
 import { UserInfoInitialState } from './initialState';
+import type { EditFacility } from '../types/fetchTypes';
 
 export type UserProps = {
     isAuthenticated: boolean;
@@ -17,6 +17,12 @@ export interface UserState {
     checkUser: (userInfo: UserInfo) => void;
     setConexion: (hasConexion: boolean) => void;
     editAccount: (editAccount: EditAccountResponse) => void
+    addFacility: (facility: AddFacilityResponse) => void
+    deleteFacility: (facilityId: number) => void
+    editFacility: (facility: EditFacility) => void
+    toggleShowQrOnQuestions: (facilityId: number) => void
+    toggleHideGoogleOnBadRating: (facilityId: number) => void
+    editDesireDailyClicks: (facilityId: number, clicks: number) => void
 }
 
 export const userStore = create<UserState>()(
@@ -73,9 +79,94 @@ export const userStore = create<UserState>()(
                 }
 
             }
-        }), undefined, 'setConexion')
+        }), undefined, 'setConexion'),
+        addFacility: (facility) => set((state) => ({
+            user: {
+                ...state.user,
+                userInfo: {
+                    ...state.user.userInfo,
+                    Facilities: [
+                        ...((state.user.userInfo?.Facilities) || []),
+                        {
+                            Id: facility.Id,
+                            Name: facility.Name,
+                            GoogleLink: facility.GoogleLink,
+                            PhoneNumber: facility.PhoneNumber,
+                            DesireDailyClicks: 100,
+                            HideGoogleOnBadRating: false,
+                            ShowQrOnQuestions: false,
+                            Devices: facility.Devices
+                        }
+                    ]
+                }
+            }
+        }), undefined, 'addFacility'),
+        deleteFacility: (facilityId: number) => set((state) => ({
+            user: {
+                ...state.user,
+                userInfo: {
+                    ...state.user.userInfo,
+                    Facilities: (state.user.userInfo?.Facilities || []).filter(facility => facility.Id !== facilityId)
+                }
+            }
+        }), undefined, 'deleteFacility'),
+        editFacility: (facility) => set((state) => ({
+            user: {
+                ...state.user,
+                userInfo: {
+                    ...state.user.userInfo,
+                    Facilities: (state.user.userInfo?.Facilities || []).map(f =>
+                        f.Id === facility.Id
+                            ? {
+                                ...f,
+                                Name: facility.Name,
+                                GoogleLink: facility.GoogleLink,
+                                PhoneNumber: facility.PhoneNumber
+                            }
+                            : f
+                    )
+                }
+            }
+        }), undefined, 'editFacility'),
+        toggleShowQrOnQuestions: (facilityId: number) => set((state) => ({
+            user: {
+                ...state.user,
+                userInfo: {
+                    ...state.user.userInfo,
+                    Facilities: (state.user.userInfo?.Facilities || []).map(f =>
+                        f.Id === facilityId
+                            ? { ...f, ShowQrOnQuestions: !f.ShowQrOnQuestions }
+                            : f
+                    )
+                }
+            }
+        }), undefined, 'toggleShowQrOnQuestions'),
 
-
-
+        toggleHideGoogleOnBadRating: (facilityId: number) => set((state) => ({
+            user: {
+                ...state.user,
+                userInfo: {
+                    ...state.user.userInfo,
+                    Facilities: (state.user.userInfo?.Facilities || []).map(f =>
+                        f.Id === facilityId
+                            ? { ...f, HideGoogleOnBadRating: !f.HideGoogleOnBadRating }
+                            : f
+                    )
+                }
+            }
+        }), undefined, 'toggleHideGoogleOnBadRating'),
+        editDesireDailyClicks: (facilityId: number, clicks: number) => set((state) => ({
+            user: {
+                ...state.user,
+                userInfo: {
+                    ...state.user.userInfo,
+                    Facilities: (state.user.userInfo?.Facilities || []).map(f =>
+                        f.Id === facilityId
+                            ? { ...f, DesireDailyClicks: clicks }
+                            : f
+                    )
+                }
+            }
+        }), undefined, 'editDesireDailyClicks'),
     })),
 )

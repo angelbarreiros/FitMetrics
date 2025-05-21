@@ -59,9 +59,9 @@ const PasswordModifier = ({
         <div className="flex flex-col gap-4 w-full ">
             {!isEditing ? (
                 <div className="flex flex-col gap-2">
-                    <label className="text-md text-secundary/70">Password:</label>
+                    <label className="text-md text-text-secundary/80">Password:</label>
                     <div className="flex items-center gap-2">
-                        <span className="flex-1 px-4 py-2 bg-gray-50 rounded-default border border-gray-200 text-secondary text-md">
+                        <span className="flex-1 px-4 py-2 bg-third rounded-default border border-gray-200 text-text-secundary text-md">
                             ********
                         </span>
                         <button
@@ -76,15 +76,15 @@ const PasswordModifier = ({
             ) : (
                 <>
                     <div className="flex flex-col gap-2 w-full">
-                        <label className="text-gray-700">Old Password</label>
+                        <label className="text-md text-text-secundary/80">Old Password</label>
                         <div className="flex w-full gap-2">
                             <input
                                 ref={inputRef}
                                 type="password"
                                 value={internalOldPwd}
                                 onChange={(e) => { setInternalOldPwd(e.target.value); setOldPwd(e.target.value) }}
-                                className={`flex-1 px-4 py-2 text-secondary text-md rounded-default transition 
-                                    border border-primary bg-white outline-none focus:ring-2 focus:ring-primary`}
+                                className={`flex-1 px-4 py-2 text-text-secundary text-md rounded-default transition 
+                                    border border-primary bg-third outline-none focus:ring-2 focus:ring-primary`}
                             />
                             <button
                                 type="button"
@@ -100,24 +100,24 @@ const PasswordModifier = ({
                         )}
                     </div>
                     <div className="flex flex-col gap-2">
-                        <label className="text-gray-700">New Password</label>
+                        <label className="text-md text-text-secundary/80">New Password</label>
                         <input
                             type="password"
                             value={internalNewPwd}
                             onChange={(e) => { setInternalNewPwd(e.target.value); setNewPwd(e.target.value) }}
-                            className="flex-1 px-4 py-2 text-secondary text-md rounded-default transition border border-primary bg-white outline-none focus:ring-2 focus:ring-primary "
+                            className="flex-1 px-4 py-2 text-text-secundary bg-third text-md rounded-default transition border border-primary  outline-none focus:ring-2 focus:ring-primary "
                         />
                         {errors.newPwd && (
                             <p className="text-red-500 text-sm mt-1">{errors.newPwd}</p>
                         )}
                     </div>
                     <div className="flex flex-col gap-2">
-                        <label className="text-gray-700">Confirm New Password</label>
+                        <label className="text-md text-text-secundary/80">Confirm New Password</label>
                         <input
                             type="password"
                             value={internalConfirmNewPwd}
                             onChange={(e) => { setInternalConfirmNewPwd(e.target.value); setConfirmNewPwd(e.target.value) }}
-                            className="flex-1 px-4 py-2 text-secondary text-md rounded-default transition border border-primary bg-white outline-none focus:ring-2 focus:ring-primary "
+                            className="flex-1 px-4 py-2 text-text-secundary bg-third text-md rounded-default transition border border-primary  outline-none focus:ring-2 focus:ring-primary "
                         />
                         {errors.confirmNewPwd && (
                             <p className="text-red-500 text-sm mt-1">{errors.confirmNewPwd}</p>
