@@ -9,11 +9,16 @@
 }
 
 @theme {
-    --color-primary: #4f8cff;
-    --color-secundary: #ffe066;
-    --color-third: #e0f7fa;
-    --color-text: #1a1a2e;
-    --color-text-secundary: #000000;
+    --color-primary: #ffb347;
+    /* Orange */
+    --color-secundary: #7c3aed;
+    /* Violet */
+    --color-third: #a3bffa;
+    /* Gold (matches orange) */
+    --color-text: #ffffff;
+    /* Blue Violet */
+    --color-text-secundary: #ffffff;
+    /* Light Orange */
 
     --color-borderLine: #000000;
 

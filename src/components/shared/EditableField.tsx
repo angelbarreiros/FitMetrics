@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 interface EditableFieldProps {
     type: string;
@@ -13,6 +13,10 @@ interface EditableFieldProps {
 
 export const SimpleEditableField = ({ value, getValue, endEditable, editable, type, name, placeholder, }: EditableFieldProps) => {
     const [internalValue, setInternalValue] = useState(value);
+    const inputRef = React.useRef<HTMLInputElement>(null);
+    useEffect(() => {
+        inputRef.current?.focus();
+    }, [editable]);
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setInternalValue(e.target.value);
         getValue(e.target.value);
@@ -30,6 +34,7 @@ export const SimpleEditableField = ({ value, getValue, endEditable, editable, ty
         <div className="flex flex-col gap-1 text-center ">
             {editable ? (
                 <input
+                    ref={inputRef}
                     id={name}
                     name={name}
                     type={type}

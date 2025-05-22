@@ -7,7 +7,7 @@ import { getFooterNavItems } from "./footerIcons";
 import { getNavItems } from "./sideIcons";
 
 export const PcAppLayoutComponent = () => {
-    const logout = userStore((state) => state.logout);
+    const logout = userStore((state) => state.userActions.logout);
     const location = useLocation();
     const [isSidebarOpen, setIsSidebarOpen] = useState(true);
     const [_, setIsMoreMenuOpen] = useState(false);

@@ -38,7 +38,6 @@ export const userStore = create<AppState>()(
             hasConexion: true,
             userInfo: UserInfoInitialState,
         },
-        filteredDevices: [],
         facilityActions: createFacilityActions(set),
         userActions: createUserActions(set),
         deviceActions: CreateDeviceActions(set),

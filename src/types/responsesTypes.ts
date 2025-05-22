@@ -21,6 +21,8 @@ export type DeviceDto = {
     Name: string;
     UuidName: string;
     IsActive: boolean;
+    FacilityName: string
+    FacilityId: number
 };
 
 export type LoginResponse = {
@@ -42,14 +44,15 @@ export type AddFacilityResponse = {
     GoogleLink: string;
     PhoneNumber: string;
     Devices: any[];
-
-    Message: string;
+    message: string;
 }
 export type AddDeviceResponse = {
     Id: number;
     Name: string;
     UuidName: string;
-    Message: string;
+    FacilityId: number;
+    FacilityName: string;
+    message: string;
 }
 export type FilterDevices = {
     Devices: DeviceDto[]

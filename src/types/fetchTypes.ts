@@ -41,6 +41,11 @@ export type EditFacility = {
     GoogleLink: string;
     PhoneNumber: string;
 }
+export type EditDeviceDto = {
+
+    Name: string
+    FacilityId: number
+}
 
 
 

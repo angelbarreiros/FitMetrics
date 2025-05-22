@@ -28,12 +28,12 @@ export const DeviceModal = () => {
         fetchData<AddDeviceResponse>({ apiName: "login", url: "/api/v1/createDevice", method: "POST", body: body, auth: { tokenName: TOKEN_NAME } },
             {
                 onForbiddenError: () => { logout(); },
-                onNotFoundError: () => { logout(); },
+                onNotFoundError: (result) => { setError(result.message) },
                 onServerError: () => {
                     setError("Server error, please try again later");
                 },
                 onSuccess: (result) => {
-                    addDevice(result, filterId.current);
+                    addDevice(result);
                     closeModal()
                     setError("");
                 },
@@ -42,7 +42,7 @@ export const DeviceModal = () => {
 
                 },
                 onUserError: (result) => {
-                    setError(result.Message);
+                    setError(result.message);
                 },
                 onUnauthorizedError: () => {
                     setError("Unauthorized error, please try again later");
