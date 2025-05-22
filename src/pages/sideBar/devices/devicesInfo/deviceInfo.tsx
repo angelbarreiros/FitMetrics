@@ -55,11 +55,12 @@ export const DeviceInfo = () => {
         <section>
             <SEO title="FitMetrics - DeviceInfo" />
             <PagesHeader
+                accountName={false}
                 beforeChildren={
                     <Link to={"/devices"} className="p-2 rounded-full hover:bg-secundary/50 transition-colors">
                         <ChevronLeftIcon className="w-6 h-6 text-text" />
                     </Link>}
-                title="Device Info"
+                title={`Device Info for ${selectedDeviceInfo.Name}`}
                 icon={Star} >
                 <div className="mr-8 text-text text-md">
                     Uuid: {selectedDeviceInfo.UuidName}

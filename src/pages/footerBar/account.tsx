@@ -13,7 +13,7 @@ import { validateEmail, validatePassword } from "../../util/validate";
 
 export default function AccountPage() {
     const { Name, Email } = userStore((state) => state.user.userInfo);
-    const { logout, editAccount } = userStore((state) => state);
+    const { logout, editAccount } = userStore((state) => state.userActions);
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [fetchError, setFetchError] = useState("");
     const [stopEditing, setStopEditing] = useState(false);
