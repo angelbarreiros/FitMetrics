@@ -45,3 +45,12 @@ export type AddFacilityResponse = {
 
     Message: string;
 }
+export type AddDeviceResponse = {
+    Id: number;
+    Name: string;
+    UuidName: string;
+    Message: string;
+}
+export type FilterDevices = {
+    Devices: DeviceDto[]
+}

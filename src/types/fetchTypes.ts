@@ -3,7 +3,7 @@ type auth = {
 }
 export interface FetchParams {
     method: 'GET' | 'POST' | 'PUT' | 'DELETE';
-    apiName: string
+    apiName: 'login' | 'customRating'
     url: string;
     body?: any;
     auth?: auth;

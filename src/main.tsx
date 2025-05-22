@@ -9,7 +9,7 @@ import { userStore } from './stores/userStore.ts'
 import { FullScreenLoader } from './components/shared/FullScreenLoader.tsx'
 const RootComponent = () => {
   const [isLoading, setIsLoading] = useState(true);
-  const { logout, checkUser, setConexion } = userStore(state => (state))
+  const { logout, checkUser, setConexion } = userStore(state => (state.userActions))
   useEffect(() => {
     onMount({ checkUser, logout, setConexion }).finally(() => setIsLoading(false));
   }, []);

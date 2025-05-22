@@ -1,7 +1,8 @@
 export interface OptionInterface {
-    id: string;
-    name: string;
+    Id: number;
+    Name: string;
 }
+
 export type CustomDropdownProps = {
     options: OptionInterface[];
     bgColor: string;
@@ -9,42 +10,40 @@ export type CustomDropdownProps = {
     id: string;
     name: string;
     defaultOption?: OptionInterface;
-    getValue: (selectedOption: string) => void;
+    getValue: (selectedOption: number) => void;
     disabled?: boolean;
+    placeholder?: string;
+};
 
-}
-export const CustomDropdown = ({
-    options,
-    bgColor,
-    id,
-    name,
-    defaultOption,
-    textColor,
-    getValue,
-    disabled,
-
-}: CustomDropdownProps) => {
+export const CustomDropdown = ({ options, bgColor, id, name, defaultOption, textColor, getValue, disabled, placeholder }: CustomDropdownProps) => {
+    const defaultValue = defaultOption ? defaultOption.Id.toString() : "";
     return (
-        <label htmlFor={id} title={name}>
+        <label htmlFor={id} title={name} className="flex flex-col w-full ">
             <select
                 name={name}
                 id={id}
-                onChange={(e) => getValue(e.target.value)}
+                onChange={(e) => getValue(Number(e.target.value))}
                 disabled={disabled}
-                className={`text-lg text-${textColor} bg-${bgColor} rounded-default px-4 py-2 md:max-w-60 sm:max-w-28 truncate`}
-
+                defaultValue={defaultValue}
+                className={`text-lg text-${textColor} bg-${bgColor} rounded-default px-4 py-2 md:mix-w-60 sm:mix-w-28 truncate `}
             >
-                {defaultOption && (
-                    <option className="text-sm truncate" value={defaultOption.id}>
-                        {defaultOption.name}
+                {!defaultOption && (
+                    <option value="" disabled hidden>
+                        {placeholder}
                     </option>
                 )}
-                {options.map((option, index) => (
-                    <option className="text-sm truncate" key={index} value={option.id}>
-                        {option.name}
+                {defaultOption && (
+                    <option value={defaultOption.Id} >
+                        {defaultOption.Name}
+                    </option>
+                )}
+                {options.map((option) => (
+                    <option key={option.Id} value={option.Id}>
+                        {option.Name}
                     </option>
                 ))}
             </select>
         </label>
     );
 };
+export default CustomDropdown;

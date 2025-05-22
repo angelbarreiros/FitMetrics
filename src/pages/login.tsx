@@ -19,7 +19,7 @@ type LoginState = {
 }
 
 export const LoginPage = () => {
-    const login = userStore(state => state.login)
+    const login = userStore(state => state.userActions.login)
     const navigate = useNavigate()
     const [loginState, setLoginState] = useState<LoginState>({ email: "", password: "", errors: [], })
     const [isLoading, setIsLoading] = useState(false);
