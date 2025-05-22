@@ -1,7 +1,7 @@
 import { CircleUserRound, Loader2, Save, SaveIcon } from "lucide-react";
 import { useCallback, useRef, useState } from "react";
 import { TOKEN_NAME } from "../../auth/Auth";
-import { SEO } from "../../components/SEO";
+import { SEO } from "../../components/shared/SEO";
 import SingleEditableField from "../../components/shared/SingleEditableField";
 import PagesHeader from "../../components/shared/PageHeader";
 import PasswordModifier from "../../components/shared/PasswordModifier";

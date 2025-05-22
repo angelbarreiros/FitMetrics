@@ -81,12 +81,12 @@ export const DeviceCard = ({ id, name, uuidname, facilityId, facilityName, isAct
     return (
         <div
             key={id}
-            className="bg-primary shadow-md rounded-lg p-5 border flex flex-col justify-between border-gray-200 hover:shadow-lg transition-all duration-300 relative"
+            className="bg-secundary/50 shadow-md rounded-lg p-5 border flex flex-col justify-between border-gray-200 hover:shadow-lg transition-all duration-300 relative"
         >
             <div className="mb-2">
                 <form
                     onSubmit={toggleEdit}
-                    className="w-62 md:w-10/12 flex-col justify-start"
+                    className="w-62 md:w-10/12 space-y-2 flex-col justify-start"
                 >
                     <SimpleEditableField endEditable={toggleEdit} name="Device Name" type="text" editable={isEditing} value={nameRef.current} getValue={(name) => nameRef.current = name}></SimpleEditableField>
                     {isEditing && (
@@ -110,14 +110,14 @@ export const DeviceCard = ({ id, name, uuidname, facilityId, facilityName, isAct
                             <button
                                 title="Approve"
                                 onClick={() => toggleDeleting()}
-                                className="text-red-400 hover:text-red-600 p-2 rounded-full hover:bg-red-50"
+                                className="text-red-400 hover:text-red-600 p-2 rounded-full hover:bg-red-50 cursor-pointer"
                             >
                                 <CircleCheck className="h-5 w-5" />
                             </button>
                             <button
                                 title="Cancel"
                                 onClick={() => setDeleting(!isDeleting)}
-                                className="text-gray-500 hover:text-gray-700 p-2 rounded-full hover:bg-gray-100"
+                                className="text-gray-500 hover:text-gray-700 p-2 rounded-full hover:bg-gray-100 cursor-pointer"
                             >
                                 <Ban className="h-5 w-5" />
                             </button>
@@ -126,14 +126,14 @@ export const DeviceCard = ({ id, name, uuidname, facilityId, facilityName, isAct
                         <button
                             title="Approve"
                             onClick={() => toggleEdit()}
-                            className="text-green-500 hover:text-green-700 p-2 rounded-full hover:bg-green-50"
+                            className="text-green-500 hover:text-green-700 p-2 rounded-full hover:bg-green-50 cursor-pointer"
                         >
                             <CircleCheck className="h-5 w-5" />
                         </button>
                     ) : (
                         <>
                             <button
-                                className="text-blue-500 hover:text-blue-700 p-2 rounded-full hover:bg-blue-50"
+                                className="text-blue-500 hover:text-blue-700 p-2 rounded-full hover:bg-blue-50 cursor-pointer"
                                 title="Edit"
                                 onClick={handleEditClick}
                             >
@@ -141,7 +141,7 @@ export const DeviceCard = ({ id, name, uuidname, facilityId, facilityName, isAct
                             </button>
                             <button
                                 onClick={() => setDeleting(!isDeleting)}
-                                className="text-red-400 hover:text-red-600 p-2 rounded-full hover:bg-red-50"
+                                className="text-red-400 hover:text-red-600 p-2 rounded-full hover:bg-red-50 cursor-pointer"
                                 title="Delete"
                             >
                                 <Trash2 className="h-5 w-5" />
@@ -161,7 +161,7 @@ export const DeviceCard = ({ id, name, uuidname, facilityId, facilityName, isAct
                 )}
 
                 <Link
-                    to={`/location/${id}`}
+                    to={`/devices/deviceInfo/${id}`}
                     className="text-indigo-600 text-sm hover:text-indigo-800 hover:underline block mb-2"
                 >
                     Device ID: {uuidname}

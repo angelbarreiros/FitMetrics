@@ -2,7 +2,7 @@ import { ArrowRight, Plus, XCircle } from "lucide-react";
 import { useEffect, useRef, useState, type FormEvent } from "react";
 
 type SimpleAdderProps = {
-    onAdd: (name: string) => Promise<void>;
+    onAdd: (name: string) => void;
     error?: string;
     placeholder?: string;
 };

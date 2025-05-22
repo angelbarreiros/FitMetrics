@@ -37,7 +37,7 @@ export const DuplicateButton = ({ id, facilityId, facilityName }: DuplicateButto
     return (
         <button
             title="Duplicate"
-            className="text-green-500 hover:text-green-700 p-2 rounded-full hover:bg-green-50"
+            className="text-green-500 hover:text-green-700 p-2 rounded-full hover:bg-green-50 cursor-pointer"
             onClick={handleDuplicate}
             disabled={loading}
         >

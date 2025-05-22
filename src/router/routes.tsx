@@ -6,7 +6,7 @@ import FacilitiesPage from "../pages/sideBar/facilities";
 import { LoginPage } from "../pages/login";
 import UnAuthorize from "../pages/unauthorize";
 import { HOME_ROUTE, type LayoutRoutes } from "./routerTypes";
-import DevicesPage from "../pages/sideBar/devices";
+import DevicesPage from "../pages/sideBar/devices/devices";
 import QrFeedbackPage from "../pages/sideBar/qrFeedback";
 import AnalyticsPage from "../pages/sideBar/analytics";
 import AlertsPage from "../pages/sideBar/alerts";
@@ -15,6 +15,8 @@ import AgentsPage from "../pages/sideBar/agents";
 import HelpPage from "../pages/footerBar/help";
 import AccountPage from "../pages/footerBar/account";
 import NoConexion from "../pages/noConexion";
+import DeviceInfo from "../pages/sideBar/devices/devicesInfo/deviceInfo";
+import DeviceQuestions from "../pages/sideBar/devices/devicesInfo/deviceQuestions/deviceQuestions";
 
 const login = {
     Route: "/login",
@@ -121,6 +123,22 @@ const noConexion = {
         Active: true,
     }
 }
+const deviceInfo = {
+    Route: "/devices/deviceInfo/:deviceId",
+    Component: <DeviceInfo />,
+    IsIndex: false,
+    FeatureFlag: {
+        Active: true,
+    }
+}
+const deviceQuestions = {
+    Route: "/devices/deviceInfo/:deviceId/questions/:ratingId",
+    Component: <DeviceQuestions />,
+    IsIndex: false,
+    FeatureFlag: {
+        Active: true,
+    }
+}
 export const AppRoutes: LayoutRoutes[] = [
     {
         Layout: NonLayout,
@@ -145,6 +163,8 @@ export const AppRoutes: LayoutRoutes[] = [
             agents,
             help,
             account,
+            deviceInfo,
+            deviceQuestions,
 
         ],
     }

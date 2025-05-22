@@ -70,7 +70,7 @@ export const PcAppLayoutComponent = () => {
                             to={item.path}
                             Icon={item.icon}
                             label={item.label}
-                            isActive={location.pathname === item.path}
+                            isActive={location.pathname.includes(item.path)}
                             onClick={item.onClick}
                             isSidebarOpen={isSidebarOpen}
                             rbac={item.rbac}

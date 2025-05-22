@@ -2,7 +2,7 @@ import { MapPin } from "lucide-react";
 import { useCallback, useState } from "react";
 import { TOKEN_NAME } from "../../auth/Auth";
 import FacilityRow from "../../components/pages/facilities/facilityRow";
-import { SEO } from "../../components/SEO";
+import { SEO } from "../../components/shared/SEO";
 import NoItemsFound from "../../components/shared/NoItemsFound";
 import PagesHeader from "../../components/shared/PageHeader";
 import { SimpleAdder } from "../../components/shared/SimpleAdder";
@@ -36,16 +36,16 @@ export const FacilitiesPage = () => {
                 onServerError: () => { setAddError("Server error"); },
                 onSuccess: (result) => { console.log(result); addFacility(result); },
                 onUserError: (result) => {
-                    setAddError(result.Message);
+                    setAddError(result.message);
                 },
-                onUnauthorizedError: (result) => { setAddError(result.Message); },
-                onUnexpectedError: (result) => { setAddError(result.Message); },
+                onUnauthorizedError: (result) => { setAddError(result.message); },
+                onUnexpectedError: (result) => { setAddError(result.message); },
             })
     }, [addFacility, logout]);
 
     return (
         <section>
-            <SEO title="FiteMetrics - Facilities" ></SEO>
+            <SEO title="FitMetrics - Facilities" ></SEO>
             <PagesHeader title="Facilities of" icon={MapPin}>
                 <div className="mr-8">
                     <SimpleAdder onAdd={handleAddFacility} error={addError} placeholder="Facility Name"></SimpleAdder>

@@ -18,14 +18,14 @@ export type CustomDropdownProps = {
 export const CustomDropdown = ({ options, bgColor, id, name, defaultOption, textColor, getValue, disabled, placeholder }: CustomDropdownProps) => {
     const defaultValue = defaultOption ? defaultOption.Id.toString() : "";
     return (
-        <label htmlFor={id} title={name} className="flex flex-col w-full ">
+        <label htmlFor={id} title={name} className="flex flex-col w-full">
             <select
                 name={name}
                 id={id}
                 onChange={(e) => getValue(Number(e.target.value))}
                 disabled={disabled}
                 defaultValue={defaultValue}
-                className={`text-lg text-${textColor} bg-${bgColor} rounded-default px-4 py-2 md:mix-w-60 sm:mix-w-28 truncate `}
+                className={`text-lg text-center text-${textColor} bg-${bgColor} rounded-default px-4 py-2 md:mix-w-60 sm:mix-w-28 truncate `}
             >
                 {!defaultOption && (
                     <option value="" disabled hidden>

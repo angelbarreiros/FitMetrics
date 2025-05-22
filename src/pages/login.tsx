@@ -3,7 +3,7 @@ import { useCallback, useState } from "react";
 import { useGoogleReCaptcha } from "@google-recaptcha/react";
 import { Loader2 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
-import { SEO } from "../components/SEO";
+import { SEO } from "../components/shared/SEO";
 import PrincipalForm from "../components/shared/PrincipalForm";
 import PrincipalFormError from "../components/shared/PrincipalFormError";
 import PrincipalFormField from "../components/shared/PrincipalFormField";
@@ -123,7 +123,7 @@ export const LoginPage = () => {
 
     return (
         <div>
-            <SEO title="FiteMetrics - Login" ></SEO>
+            <SEO title="FitMetrics - Login" ></SEO>
             <div className="flex items-center justify-center min-h-screen">
                 <div className="m-auto min-w-sm md:min-w-lg p-6 bg-third shadow-xl rounded-default">
                     <header className="mb-6 space-y-5">

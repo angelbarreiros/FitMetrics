@@ -57,3 +57,26 @@ export type AddDeviceResponse = {
 export type FilterDevices = {
     Devices: DeviceDto[]
 }
+export type DeviceInfoResponse = {
+    Id: number;
+    Name: string;
+    UuidName: string;
+    IsActive: boolean;
+    R1Id: number;
+    R2Id: number;
+    R3Id: number;
+    R4Id: number;
+}
+export type QuestionResponse = {
+    Id: number;
+    Phrase: string;
+    Weight: number;
+    IsVisible: boolean;
+    message: string;
+
+}
+export type RatingQuestionsResponse = {
+    Questions: QuestionResponse[]
+    Name: string;
+    message: string;
+}

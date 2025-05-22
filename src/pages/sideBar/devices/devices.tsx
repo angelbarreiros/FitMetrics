@@ -1,15 +1,16 @@
 import { TabletIcon } from "lucide-react";
 import { useEffect, useState } from "react";
-import { TOKEN_NAME } from "../../auth/Auth";
-import { SEO } from "../../components/SEO";
-import DeviceModal from "../../components/pages/devices/deviceModal";
-import CustomDropdown from "../../components/shared/CustomDropdown";
-import NoItemsFound from "../../components/shared/NoItemsFound";
-import PagesHeader from "../../components/shared/PageHeader";
-import { userStore } from "../../stores/userStore";
-import type { FilterDevices } from "../../types/responsesTypes";
-import { fetchData } from "../../util/fetch";
-import DeviceCard from "../../components/pages/devices/deviceCard";
+import { TOKEN_NAME } from "../../../auth/Auth";
+import DeviceCard from "../../../components/pages/devices/deviceCard";
+import DeviceModal from "../../../components/pages/devices/deviceModal";
+import { SEO } from "../../../components/shared/SEO";
+import CustomDropdown from "../../../components/shared/CustomDropdown";
+import NoItemsFound from "../../../components/shared/NoItemsFound";
+import PagesHeader from "../../../components/shared/PageHeader";
+import userStore from "../../../stores/userStore";
+import type { FilterDevices } from "../../../types/responsesTypes";
+import { fetchData } from "../../../util/fetch";
+
 
 export default function DevicesPage() {
     const Facilities = userStore(state => state.user.userInfo.Facilities);
@@ -45,7 +46,7 @@ export default function DevicesPage() {
 
     return (
         <section>
-            <SEO title="FiteMetrics - Devices" />
+            <SEO title="FitMetrics - Devices" />
             <PagesHeader title="Devices" icon={TabletIcon}>
                 <div className="flex flex-row mr-8 items-center justify-center gap-2">
                     <CustomDropdown
@@ -65,8 +66,7 @@ export default function DevicesPage() {
                     ? <NoItemsFound title="Devices" buttonLabel="Create" />
                     : (
                         <div
-                            className="grid md:grid-cols-4 gap-4  transition-all duration-300"
-
+                            className="grid md:grid-cols-4 gap-4 "
                         >
                             {devices.map((device) => (
 
