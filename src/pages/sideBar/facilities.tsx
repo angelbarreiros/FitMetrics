@@ -1,5 +1,5 @@
 import { MapPin } from "lucide-react";
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import { TOKEN_NAME } from "../../auth/Auth";
 import FacilityRow from "../../components/pages/facilities/facilityRow";
 import { SEO } from "../../components/SEO";
@@ -11,9 +11,10 @@ import type { AddFacilityResponse } from "../../types/responsesTypes";
 import { fetchData } from "../../util/fetch";
 export const FacilitiesPage = () => {
     const facilities = userStore(state => state.user.userInfo.Facilities)
-    const { addFacility, logout } = userStore(state => state);
+    const { addFacility } = userStore(state => state.facilityActions);
+    const { logout } = userStore(state => state.userActions);
     const [addError, setAddError] = useState("");
-    const handleAddFacility = async (name: string) => {
+    const handleAddFacility = useCallback(async (name: string) => {
         setAddError("");
         if (facilities.some(facility => facility.Name === name.trim())) {
             setAddError("Facility already exists");
@@ -39,9 +40,8 @@ export const FacilitiesPage = () => {
                 },
                 onUnauthorizedError: (result) => { setAddError(result.Message); },
                 onUnexpectedError: (result) => { setAddError(result.Message); },
-
             })
-    };
+    }, [addFacility, logout]);
 
     return (
         <section>
@@ -71,7 +71,7 @@ export const FacilitiesPage = () => {
                 </div>
                 {facilities.length === 0
                     ? <NoItemsFound title="Facilities" buttonLabel="Add" />
-                    : [...facilities].reverse().map((facility) => (
+                    : facilities.map((facility) => (
                         <div
                             key={facility.Id}
                             className="m-3 bg-secundary/50 rounded-default hover:shadow-xl transition-shadow duration-300"
@@ -85,7 +85,7 @@ export const FacilitiesPage = () => {
                                 ShowQrOnQuestions={facility.ShowQrOnQuestions}
                                 HideGoogleOnBadRating={facility.HideGoogleOnBadRating}
                                 DesireDailyClicks={facility.DesireDailyClicks}
-                                key={facility.Id}
+
                             />
                         </div>
                     ))

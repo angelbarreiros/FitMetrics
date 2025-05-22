@@ -12,7 +12,8 @@ type FacilitySettings = {
     DesireDailyClicks: number;
 }
 const SettingsMenu = (facility: FacilitySettings) => {
-    const { toggleShowQrOnQuestions, toggleHideGoogleOnBadRating, editDesireDailyClicks, logout } = userStore((state) => state);
+    const { toggleShowQrOnQuestions, toggleHideGoogleOnBadRating, editDesireDailyClicks } = userStore((state) => state.facilityActions);
+    const { logout } = userStore((state) => state.userActions);
     const [showQr, setShowQr] = useState(facility.ShowQrOnQuestions);
     const [hideGoogle, setHideGoogle] = useState(facility.HideGoogleOnBadRating);
     const [clicks, setClicks] = useState(facility.DesireDailyClicks || 0);
@@ -90,7 +91,7 @@ const SettingsMenu = (facility: FacilitySettings) => {
 
             {/* Desire Daily Clicks */}
             <div className="flex items-center justify-between w-full">
-                <span className="">Desire dayli clicks</span>
+                <span className="">Desire daily clicks</span>
                 <div className="flex items-center gap-2">
                     {clickEditing ? (
                         <>

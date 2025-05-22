@@ -2,25 +2,25 @@ import { Ban, CircleCheck, Pencil, Settings, Trash2 } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 
 import { Link } from "react-router-dom";
-import SettingsMenu from "./settingsMenu";
-import type { FacilitiesDto } from "../../../types/responsesTypes";
-import { fetchData } from "../../../util/fetch";
 import { TOKEN_NAME } from "../../../auth/Auth";
 import { userStore } from "../../../stores/userStore";
+import type { FacilitiesDto } from "../../../types/responsesTypes";
+import { fetchData } from "../../../util/fetch";
+import SimpleEditableField from "../../shared/EditableField";
+import SettingsMenu from "./settingsMenu";
 
 const FacilityRow = ({ Id, Name, GoogleLink, PhoneNumber, ShowQrOnQuestions, HideGoogleOnBadRating, DesireDailyClicks, Devices }: FacilitiesDto) => {
-    const { deleteFacility, editFacility, logout } = userStore(state => state);
-
-
-    const inputRef = useRef<HTMLInputElement>(null);
+    const { deleteFacility, editFacility } = userStore(state => state.facilityActions);
+    const { logout } = userStore(state => state.userActions);
     const [isEditing, setEditing] = useState(false);
     const [isDeleting, setDeleting] = useState(false);
     const [showSettings, setShowSettings] = useState(false);
     const [errorMessage, setErrorMessage] = useState("");
 
-    const [nameState, setName] = useState(Name);
-    const [linkState, setLink] = useState(GoogleLink);
-    const [phoneState, setPhone] = useState(PhoneNumber);
+    const nameRef = useRef<string>(Name);
+    const linkRef = useRef<string>(GoogleLink);
+    const phoneRef = useRef<string>(PhoneNumber);
+
 
     const [locationColors, setLocationColors] = useState<Record<string, string>>({});
 
@@ -43,26 +43,38 @@ const FacilityRow = ({ Id, Name, GoogleLink, PhoneNumber, ShowQrOnQuestions, Hid
     }, [Devices]);
 
     const handleSave = async () => {
-        if (!nameState.trim()) {
+        if (!nameRef.current.trim()) {
             setErrorMessage("Name cannot be empty");
             return;
         }
-        if (linkState && !/^https?:\/\/.+/.test(linkState.trim())) {
+        if (nameRef.current.trim().length > 30) {
+            setErrorMessage("Name cannot exceed 30 characters");
+            return;
+        }
+        if (linkRef.current.trim().length > 500) {
+            setErrorMessage("Google Link cannot exceed 500 characters");
+            return;
+        }
+        if (phoneRef.current.trim().length > 20) {
+            setErrorMessage("Phone number cannot exceed 20 characters");
+            return;
+        }
+        if (linkRef.current && !/^https?:\/\/.+/.test(linkRef.current.trim())) {
             setErrorMessage("Google Link must be a valid URL starting with http:// or https://");
             return;
         }
-        if (phoneState && !/^\+?[0-9\s\-()]{7,20}$/.test(phoneState.trim())) {
+        if (phoneRef.current && !/^\+?[0-9\s\-()]{7,20}$/.test(phoneRef.current.trim())) {
             setErrorMessage("Phone number is invalid");
             return;
         }
         setErrorMessage("");
-        const body = { Name: nameState.trim(), GoogleLink: linkState.trim(), PhoneNumber: phoneState.trim() };
+        const body = { Name: nameRef.current.trim(), GoogleLink: linkRef.current.trim(), PhoneNumber: phoneRef.current.trim() };
         fetchData({ apiName: "login", url: `/api/v1/editFacility/${Id}`, method: "PUT", body: body, auth: { tokenName: TOKEN_NAME } }, {
             onForbiddenError: () => { logout(); },
             onNotFoundError: () => { setErrorMessage("Server error"); },
             onServerError: () => { setErrorMessage("Server error"); },
             onSuccess: () => {
-                editFacility({ Id: Id, Name: nameState.trim(), GoogleLink: linkState.trim(), PhoneNumber: phoneState.trim() });
+                editFacility({ Id: Id, Name: nameRef.current.trim(), GoogleLink: linkRef.current.trim(), PhoneNumber: phoneRef.current.trim() });
                 setEditing(false);
             },
             onUserError: () => { setErrorMessage("Server error"); },
@@ -72,7 +84,10 @@ const FacilityRow = ({ Id, Name, GoogleLink, PhoneNumber, ShowQrOnQuestions, Hid
         })
 
     };
+    const handleEndEditing = async () => {
+        await handleSave();
 
+    }
     const handleDelete = async () => {
         fetchData({ apiName: "login", url: `/api/v1/deleteFacility/${Id}`, method: "DELETE", auth: { tokenName: TOKEN_NAME } }, {
             onForbiddenError: () => { logout(); },
@@ -91,53 +106,19 @@ const FacilityRow = ({ Id, Name, GoogleLink, PhoneNumber, ShowQrOnQuestions, Hid
             <div className="grid grid-cols-10 items-center gap-2  ">
                 {/* Name */}
                 <div className="col-span-2 text-center">
-                    {isEditing ? (
-                        <input
-                            ref={inputRef}
-                            className=" w-full border-2 border-primary rounded-default p-1"
-                            value={nameState}
-                            onChange={(e) => setName(e.target.value)}
-                        />
-                    ) : (
-                        <span className="block text-text-secundary text-lg text-center truncate">{nameState}</span>
-                    )}
+                    <SimpleEditableField endEditable={handleEndEditing} getValue={(value) => nameRef.current = value} type="text" editable={isEditing} value={nameRef.current} placeholder={Name} name="Name" ></SimpleEditableField>
+
                 </div>
 
                 {/* Google Link */}
                 <div className="col-span-2 text-center">
-                    {isEditing ? (
-                        <input
-                            className=" w-full border-2 border-primary rounded-default p-1"
-                            value={linkState}
-                            onChange={(e) => setLink(e.target.value)}
-                        />
-                    ) : phoneState !== "" ? (
-                        <a
-                            href={phoneState}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="text-blue-500 hover:underline block truncate"
-                        >
-                            {phoneState}
-                        </a>
-                    ) : (
-                        <span className="text-text-secundary/50">No Link</span>
-                    )}
+                    <SimpleEditableField endEditable={handleEndEditing} getValue={(value) => linkRef.current = value} type="text" editable={isEditing} value={linkRef.current} placeholder={GoogleLink} name="Google Link" ></SimpleEditableField>
                 </div>
 
                 {/* Phone Number */}
                 <div className="col-span-2 text-center">
-                    {isEditing ? (
-                        <input
-                            className=" w-full border-2 border-primary rounded-default p-1"
-                            value={phoneState}
-                            onChange={(e) => setPhone(e.target.value)}
-                        />
-                    ) : (
-                        <span className="block truncate text-text-secundary">
-                            {phoneState || "No phone number"}
-                        </span>
-                    )}
+                    <SimpleEditableField endEditable={handleEndEditing} getValue={(value) => phoneRef.current = value} type="text" editable={isEditing} value={phoneRef.current} placeholder={PhoneNumber} name="Phone Number" ></SimpleEditableField>
+
                 </div>
 
                 {/* Devices */}

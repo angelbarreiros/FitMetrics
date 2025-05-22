@@ -1,92 +1,52 @@
-import { LucideUndo2, Pencil } from "lucide-react";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useState } from "react";
 
 interface EditableFieldProps {
-    label: string;
     type: string;
     value: string;
-    stopEditing?: boolean;
+    editable: boolean;
+    endEditable: () => void
     getValue: (newValue: string) => void;
     name?: string;
     placeholder?: string;
-    error: string
+
 }
 
-export const EditableField = ({ label, value, getValue, stopEditing, type, name, placeholder, error }: EditableFieldProps) => {
-    const [editing, setEditing] = useState(false);
-    const [inputValue, setInputValue] = useState(value);
-    const inputRef = useRef<HTMLInputElement>(null);
-    useEffect(() => { setEditing(false) }, [stopEditing]);
-
-    const handleEditClick = () => {
-        setEditing(true);
-        setTimeout(() => {
-            inputRef.current?.focus();
-        }, 0);
-    };
-
-    const handleCancelClick = () => {
-        setInputValue(value);
-        setEditing(false);
-        getValue(value);
-    };
-
+export const SimpleEditableField = ({ value, getValue, endEditable, editable, type, name, placeholder, }: EditableFieldProps) => {
+    const [internalValue, setInternalValue] = useState(value);
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setInputValue(e.target.value);
+        setInternalValue(e.target.value);
         getValue(e.target.value);
     };
 
+    const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+        if (e.key === 'Enter') {
+
+            getValue(internalValue);
+            endEditable();
+        }
+    };
 
     return (
-        <div className="flex flex-col gap-1">
-            <label htmlFor={name} className="text-md text-text-secundary/80">
-                {label}:
-            </label>
-            <div className="flex items-center gap-2">
+        <div className="flex flex-col gap-1 text-center ">
+            {editable ? (
                 <input
-                    ref={inputRef}
                     id={name}
                     name={name}
                     type={type}
-                    value={inputValue}
+                    value={internalValue}
                     onChange={handleInputChange}
-                    disabled={!editing}
+                    onKeyDown={handleKeyDown}
                     placeholder={placeholder}
-                    className={`flex-1 px-4 py-2  text-text-secundary text-md rounded-default
-                            ${editing
-                            ? "border border-primary  outline-none focus:ring-2 focus:ring-primary"
-                            : "bg-trhid  border border-gray-200"
-                        }`
-                    }
+                    className="w-full border-2 text-center border-primary rounded-default p-1 outline-none focus:ring-2 focus:ring-primary text-md text-text-secundary"
                 />
-
-                {error && (
-                    <span className="text-error text-sm">
-                        {error}
-                    </span>
-                )}
-                {editing ? (
-                    <button
-                        type="button"
-                        aria-label="Cancel editing"
-                        onClick={handleCancelClick}
-                        className="bg-none border-none cursor-pointer  text-primary"
-                    >
-                        <LucideUndo2 className="w-6 h-6" />
-                    </button>
-                ) : (
-                    <button
-                        type="button"
-                        aria-label="Edit field"
-                        onClick={handleEditClick}
-                        className="bg-none border-none cursor-pointer text-primary"
-                    >
-                        <Pencil className="w-6 h-6" />
-                    </button>
-                )}
-            </div>
+            ) : (
+                <span className="block text-text-secundary text-md truncate">
+                    {value.trim() !== "" ? value : `No ${name}`}
+                </span>
+            )}
         </div>
     );
-};
+}
 
-export default EditableField;
+
+export default SimpleEditableField;

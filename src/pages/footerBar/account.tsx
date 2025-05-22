@@ -2,7 +2,7 @@ import { CircleUserRound, Loader2, Save, SaveIcon } from "lucide-react";
 import { useCallback, useRef, useState } from "react";
 import { TOKEN_NAME } from "../../auth/Auth";
 import { SEO } from "../../components/SEO";
-import EditableField from "../../components/shared/EditableField";
+import SingleEditableField from "../../components/shared/SingleEditableField";
 import PagesHeader from "../../components/shared/PageHeader";
 import PasswordModifier from "../../components/shared/PasswordModifier";
 import { userStore } from "../../stores/userStore";
@@ -121,7 +121,7 @@ export default function AccountPage() {
                 </div>
             </PagesHeader>
             <div className="grid md:grid-cols-2 p-6 gap-4">
-                <EditableField
+                <SingleEditableField
                     stopEditing={stopEditing}
                     name="Username"
                     label="Username"
@@ -130,7 +130,7 @@ export default function AccountPage() {
                     value={Name}
                     getValue={useCallback((userName) => { userNameRef.current = userName; setErrors({ ...errors, userName: "" }); }, [errors])}
                 />
-                <EditableField
+                <SingleEditableField
                     stopEditing={stopEditing}
                     name="Email"
                     label="Email"
