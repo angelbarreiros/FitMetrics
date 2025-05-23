@@ -17,15 +17,6 @@ export interface FetchResponse<T> {
     status: number;
     data: T;
 }
-export interface ResponseActions<T> {
-    onSuccess: (result: T) => void;
-    onUserError: (result: T) => void;
-    onServerError: (result: T) => void;
-    onUnexpectedError: (result: T) => void;
-    onForbiddenError: (result: T) => void;
-    onUnauthorizedError: (result: T) => void;
-    onNotFoundError: (result: T) => void;
-}
 
 
 export type EditAccount = {

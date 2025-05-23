@@ -21,6 +21,5 @@ export const SelectedDeviceInitialState: DeviceInfoResponse = {
 export const SelectedRatingInitialState: RatingQuestionsResponse = {
     Questions: [],
     Name: "",
-
-
+    message: ""
 }

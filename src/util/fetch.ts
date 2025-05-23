@@ -1,8 +1,17 @@
-import type { FetchParams, FetchResponse, ResponseActions } from '../types/fetchTypes';
+import type { FetchParams, FetchResponse } from '../types/fetchTypes';
 const apis: { [key: string]: string } = {
     login: import.meta.env.VITE_LOGIN_URL as string
 };
 
+export interface ResponseActions<T> {
+    onSuccess: (result: T) => void;
+    onUserError: (result: T) => void;
+    onServerError: (result: T) => void;
+    onUnexpectedError: (result: T) => void;
+    onForbiddenError: (result: T) => void;
+    onUnauthorizedError: (result: T) => void;
+    onNotFoundError: (result: T) => void;
+}
 
 
 const fetcher = async <T>({ apiName, method, url, body, auth }: FetchParams): Promise<FetchResponse<T>> => {
